@@ -2,6 +2,7 @@
     padding: 24px;
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     height: 100vh;
+    overflow-x: hidden;
     overflow-y: auto;
     border-right: 1px solid #dee2e6;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
