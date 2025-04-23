@@ -1,0 +1,59 @@
+/* form-title.module.css */
+
+.formTitleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.formTitleText {
+  max-width: 100%;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease, background-color 0.3s ease,
+    border-color 0.3s ease;
+  outline: none;
+  margin: 10px; /* 增加边距 */
+  padding: 10px; /* 增加内边距 */
+  border-radius: 5px; /* 圆角 */
+}
+
+.formTitleText:hover,
+.formTitleText[contenteditable="true"] {
+  color: #555;
+  background-color: #dee2e6; /* 更深的背景颜色 */
+  border-color: #007bff; /* 边框颜色 */
+}
+
+.formTitleText::selection {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 3px; /* 圆角 */
+}
+
+.formTitleInput {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  padding: 10px; /* 增加内边距 */
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  margin: 10px; /* 增加边距 */
+  border-radius: 5px; /* 圆角 */
+}
+
+.formTitleInput:hover,
+.formTitleInput:focus {
+  border-color: #007bff;
+  background-color: #dee2e6; /* 更深的背景颜色 */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 添加阴影效果 */
+}

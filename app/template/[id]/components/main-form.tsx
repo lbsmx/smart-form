@@ -1,44 +1,32 @@
-import styles from '@/app/template/[id]/components/styles/main-form.module.css';
-import { Form } from 'antd';
-import SortableItem from '@/app/template/[id]/components/sortable-item';
-import { v4 as uuidv4 } from 'uuid';
-import {
-    SortableContext,
-    verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-export default function MainForm({ formList }) {
-    const generateFormItem = (item) => {
-        return {
-            id: uuidv4(),
-            type: item.type,
-        };
-    };
+import { Empty } from "antd";
+import styles from "@/app/template/[id]/components/styles/main-form.module.css";
+import SortableItem from "@/app/template/[id]/components/sortable-item/sortable-item.tsx";
+import DroppableContainer from "./droppable-container/droppable-container";
+import FormTitle from "./form-title/form-title";
 
-    return (
-        <div className={styles.formContainer}>
-            <Form
-                className={styles.form}
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 16 }}
-                size="large"
-                style={{
-                    padding: '24px',
-                }}
-            >
-                <SortableContext
-                    items={formList.map((item) => item.id)}
-                    strategy={verticalListSortingStrategy}
-                >
-                    {formList.map((item, index) => (
-                        <SortableItem
-                            id={item.id}
-                            type={item.type}
-                            key={item.id}
-                            index={index}
-                        ></SortableItem>
-                    ))}
-                </SortableContext>
-            </Form>
-        </div>
-    );
+export default function MainForm({ formList }) {
+  return (
+    <div className={styles.formContainer}>
+      <FormTitle initialTitle="Untitled Form" />
+      <div className={styles.form} style={{ padding: "24px 0" }}>
+        <DroppableContainer formList={formList}>
+          {formList.length > 0 ? (
+            formList.map((item, index) => (
+              <SortableItem
+                {...item}
+                key={item.id}
+                sortable={true}
+                disabled={false}
+              />
+            ))
+          ) : (
+            <Empty
+              image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+              description="No items in the form"
+            />
+          )}
+        </DroppableContainer>
+      </div>
+    </div>
+  );
 }

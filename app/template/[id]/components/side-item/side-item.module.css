@@ -1,0 +1,32 @@
+.sideItem {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 4px 0;
+  background-color: #f2f3f5;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sideItem:hover {
+  background-color: rgba(31, 35, 41, 0.12);
+}
+
+.icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.label {
+  flex-grow: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.itemContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

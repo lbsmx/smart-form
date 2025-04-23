@@ -1,0 +1,56 @@
+.item {
+  position: relative;
+  padding: 18px 32px;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.item:not(:first-child) {
+  margin-top: 8px;
+}
+
+.item.dragging::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(231, 238, 253);
+  border: 1px dashed rgba(20, 85, 237);
+  z-index: 1;
+}
+
+.item:hover {
+  box-shadow: 0px 6px 18px 6px rgba(31, 35, 41, 0.03),
+    0px 3px 6px -6px rgba(31, 35, 41, 0.05),
+    0px 4px 8px 0px rgba(31, 35, 41, 0.03);
+  z-index: 1;
+}
+
+.formItemContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.formItemContainer.editable::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  pointer-events: all;
+  z-index: 1;
+}
+
+.handle {
+  position: absolute;
+  left: 10px;
+  top: 20px;
+}

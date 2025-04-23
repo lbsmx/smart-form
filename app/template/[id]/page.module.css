@@ -1,7 +1,7 @@
 .page {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(350px, 1fr) 5fr;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }

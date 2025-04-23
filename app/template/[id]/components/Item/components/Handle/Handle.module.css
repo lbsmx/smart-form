@@ -1,0 +1,17 @@
+/* Handle.module.css */
+.handle {
+  display: flex;
+  width: 12px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  touch-action: none;
+  cursor: grab;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  appearance: none;
+  background-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: content-box;
+}
