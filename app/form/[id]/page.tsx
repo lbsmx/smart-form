@@ -1,16 +1,5 @@
 'use client';
 
-interface TemplateConfig {
-    [key: string]: {
-        name: string;
-        description: string;
-        structure: {
-            title: string;
-            formList: SortableItemProps[];
-        };
-    };
-}
-
 import * as React from 'react';
 import styles from '@/app/form/[id]/page.module.css';
 import SideFormItemPanel from './components/side-form-item-panel';
@@ -36,16 +25,16 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
-import { useState, useEffect, Usable } from 'react';
+import { useState, useEffect } from 'react';
 import Item from './components/Item/Item.tsx';
 import { SortableItemProps } from './components/sortable-item/sortable-item';
 import { v4 as uuidv4 } from 'uuid';
-import TemplateJson from '@/app/form/config/template.json';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFormList } from '@/store/form.ts';
 import { RootState } from '@/store/index.ts';
 import SideItem from './components/side-item/side-item.tsx';
 import _ from 'lodash';
+import { notFound } from 'next/navigation';
 
 const screenReaderInstructions: ScreenReaderInstructions = {
     draggable: `
@@ -55,12 +44,10 @@ const screenReaderInstructions: ScreenReaderInstructions = {
     `,
 };
 
-const templateJson: TemplateConfig = TemplateJson;
-
 export default function Template({
     params,
 }: {
-    params: Usable<{ id: string }>;
+    params: Promise<{ id: string }>;
 }) {
     const { id }: { id: string } = React.use(params);
 
@@ -122,9 +109,7 @@ export default function Template({
         // 因此在服务端预渲染时拿不到document，需要使用副作用函数保证在客户端获取到document
         if (typeof document !== 'undefined') setPortalRoot(document.body);
         // 配置初始模板
-        if (templateJson[id]) {
-            dispatch(setFormList(templateJson[id].structure.formList));
-        }
+        getForm(id);
     }, []);
 
     const dropAnimationConfig: DropAnimation = {
@@ -135,6 +120,16 @@ export default function Template({
                 },
             },
         }),
+    };
+
+    const getForm = async (id: string) => {
+        if (!id) notFound();
+        const res = await fetch(`/api/form?id=${id}`);
+        if (!res.ok) {
+            throw new Error('Failed to fetch form');
+        }
+        const response = await res.json();
+        dispatch(setFormList(response.formList));
     };
 
     const findContainer = (id: UniqueIdentifier) => {
