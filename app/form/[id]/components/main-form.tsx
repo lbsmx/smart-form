@@ -3,11 +3,16 @@ import styles from '@/app/form/[id]/components/styles/main-form.module.css';
 import SortableItem from '@/app/form/[id]/components/sortable-item/sortable-item.tsx';
 import DroppableContainer from './droppable-container/droppable-container';
 import FormTitle from './form-title/form-title';
+import { SortableItemProps } from '@/app/form/[id]/components/sortable-item/sortable-item';
 
-export default function MainForm({ formList }) {
+export default function MainForm({
+    formList,
+}: {
+    formList: SortableItemProps[];
+}) {
     return (
         <div className={styles.formContainer}>
-            <FormTitle initialTitle="Untitled Form" />
+            <FormTitle />
             <div className={styles.form} style={{ padding: '24px 0' }}>
                 <DroppableContainer formList={formList}>
                     {formList.length > 0 ? (

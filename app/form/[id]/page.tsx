@@ -30,8 +30,8 @@ import Item from './components/Item/Item.tsx';
 import { SortableItemProps } from './components/sortable-item/sortable-item';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFormList } from '@/store/form.ts';
-import { RootState } from '@/store/index.ts';
+import { setForm, updateForm } from '@/store/form.ts';
+import { AppDispatch, RootState } from '@/store/index.ts';
 import SideItem from './components/side-item/side-item.tsx';
 import _ from 'lodash';
 import { notFound } from 'next/navigation';
@@ -90,9 +90,9 @@ export default function Template({
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
+            // 触发拖拽的阈值，默认为15px 防止绑定其上的click无法触发
             activationConstraint: {
-                delay: 120,
-                tolerance: 5,
+                distance: 15,
             },
         }),
         useSensor(KeyboardSensor, {
@@ -100,7 +100,7 @@ export default function Template({
         })
     );
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const formList = useSelector((state: RootState) => state.form.formList);
 
     // 因为在服务端无法获取document 因此组件挂载时创建 portalRoot
@@ -129,7 +129,7 @@ export default function Template({
             throw new Error('Failed to fetch form');
         }
         const response = await res.json();
-        dispatch(setFormList(response.formList));
+        dispatch(setForm(response));
     };
 
     const findContainer = (id: UniqueIdentifier) => {
@@ -190,11 +190,16 @@ export default function Template({
                     return copyItem;
                 });
                 dispatch(
-                    setFormList([
-                        ...copyItems.slice(0, newIndex),
-                        activeItem,
-                        ...copyItems.slice(newIndex),
-                    ])
+                    updateForm({
+                        type: 'formList',
+                        data: {
+                            updatedFormList: [
+                                ...copyItems.slice(0, newIndex),
+                                activeItem,
+                                ...copyItems.slice(newIndex),
+                            ],
+                        },
+                    })
                 );
             }
             return undefined;
@@ -208,7 +213,18 @@ export default function Template({
                 const newIndex = formList.findIndex(
                     (item) => item.id === over.id
                 );
-                dispatch(setFormList(arrayMove(formList, oldIndex, newIndex)));
+                dispatch(
+                    updateForm({
+                        type: 'formList',
+                        data: {
+                            updatedFormList: arrayMove(
+                                formList,
+                                oldIndex,
+                                newIndex
+                            ),
+                        },
+                    })
+                );
                 return;
             }
 

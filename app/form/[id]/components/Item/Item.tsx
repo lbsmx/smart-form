@@ -76,7 +76,7 @@ const Item = forwardRef<HTMLElement, ItemProps>(
                 )}
                 <div style={{ flex: 1, marginBottom: 0 }}>
                     {!sortable || isEditing ? null : (
-                        <div style={{ marginBottom: 8 }}>
+                        <div style={{ marginBottom: 8, lineHeight: 1 }}>
                             <label style={{ cursor: 'pointer' }}>
                                 {restProps.label}
                             </label>

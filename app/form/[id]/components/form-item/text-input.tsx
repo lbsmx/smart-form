@@ -2,7 +2,8 @@ import { Input, InputNumber, Form } from 'antd';
 import React from 'react';
 import { SortableItemProps } from '../sortable-item/sortable-item';
 import { useDispatch } from 'react-redux';
-import { updateFormItem } from '@/store/form';
+import { updateForm } from '@/store/form';
+import { AppDispatch } from '@/store/index';
 
 interface TextInputProps extends SortableItemProps {
     placeholder?: string;
@@ -13,15 +14,18 @@ interface TextInputProps extends SortableItemProps {
 export default function TextInput(props: TextInputProps) {
     const { isEditing, id, placeholder, maxLength, label } = props;
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const [form] = Form.useForm();
 
     const onValuesChange = (changedValues: any) => {
         dispatch(
-            updateFormItem({
-                id,
-                updatedItem: changedValues,
+            updateForm({
+                type: 'formItem',
+                data: {
+                    id,
+                    updatedItem: changedValues,
+                },
             })
         );
     };

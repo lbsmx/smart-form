@@ -1,6 +1,7 @@
 TODO
-1. 根据其他市面上产品优化UI
-2. 补充剩余组件
+
+1. required
+2. 侧边栏数据存入数据库调用
 
 ## Getting Started
 
@@ -15,4 +16,3 @@ pnpm dev
 # or
 bun dev
 ```
-
