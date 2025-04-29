@@ -1,19 +1,20 @@
-'use client';
-
-import { Input, InputNumber, Form } from 'antd';
 import React from 'react';
-import { SortableItemProps } from '../sortable-item/sortable-item';
+import { Input, Form, InputNumber } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateForm } from '@/store/form';
 import { AppDispatch } from '@/store/index';
 
-interface TextInputProps extends SortableItemProps {
+const { TextArea } = Input;
+
+interface TextAreaProps {
+    id: string;
     placeholder?: string;
     maxLength?: number;
     isEditing: boolean;
+    label: string;
 }
 
-export default function TextInput(props: TextInputProps) {
+export default function Textarea(props: TextAreaProps) {
     const { isEditing, id, placeholder, maxLength, label } = props;
 
     const dispatch = useDispatch<AppDispatch>();
@@ -32,13 +33,17 @@ export default function TextInput(props: TextInputProps) {
         );
     };
 
+    const effectiveMaxLength = maxLength ? Math.min(maxLength, 500) : 500;
+
     return (
         <div style={{ flex: 1 }}>
             {!isEditing && (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Input
-                        maxLength={props.maxLength}
-                        placeholder={props.placeholder}
+                    <TextArea
+                        rows={4}
+                        autoSize={{ minRows: 3, maxRows: 5 }}
+                        placeholder={placeholder}
+                        maxLength={effectiveMaxLength}
                         style={{ flex: 1 }}
                     />
                 </div>
@@ -59,8 +64,8 @@ export default function TextInput(props: TextInputProps) {
                     <Form.Item label="最大长度" name="maxLength">
                         <InputNumber
                             min={1}
-                            max={1000}
-                            placeholder="请输入文本最大长度，默认最大长度为30"
+                            max={500}
+                            placeholder="请输入文本最大长度，默认最大长度为500"
                             style={{ width: '100%' }}
                         />
                     </Form.Item>

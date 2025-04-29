@@ -1,5 +1,5 @@
 import FieldType from '@/app/form/[id]/components/form-item/field-types';
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 // Define the structure of the form document
 interface FormDocument extends Document {
@@ -25,7 +25,7 @@ const formSchema: Schema<FormDocument> = new Schema(
 );
 
 // Create a Mongoose model using the schema
-const Forms: Model<FormDocument> =
+const Forms =
     mongoose.models.Forms || mongoose.model<FormDocument>('Forms', formSchema);
 
 export default Forms;

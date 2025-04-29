@@ -8,6 +8,7 @@ export interface ItemProps extends FieldType {
     style?: React.CSSProperties;
     listeners?: DraggableSyntheticListeners;
     attributes?: any;
+    required: boolean;
 }
 
 export default Item;

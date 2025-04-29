@@ -54,3 +54,19 @@
     left: 10px;
     top: 18px;
 }
+
+.labelContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.requiredIcon {
+    color: #ff4d4f;
+    margin-right: 4px;
+}
+
+.switchContainer {
+    margin-left: auto;
+}

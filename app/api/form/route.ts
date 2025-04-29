@@ -1,10 +1,7 @@
 import dbConnect from '@/lib/mongodb';
 import Forms from '@/lib/form';
 import { NextRequest } from 'next/server';
-import { notFound } from 'next/navigation';
-import { SortableItemProps } from '@/app/form/[id]/components/sortable-item/sortable-item';
-import { UniqueIdentifier } from '@dnd-kit/core';
-import FieldType from '@/app/form/[id]/components/form-item/field-types';
+import { updateFormList } from '@/store/form';
 
 export async function POST(request: NextRequest) {
     await dbConnect();
@@ -16,27 +13,6 @@ export async function POST(request: NextRequest) {
     };
     return new Response(JSON.stringify(response), { status: 201 });
 }
-
-interface updatedFormListParams {
-    formList: SortableItemProps[];
-    id: UniqueIdentifier;
-    updatedItem: Partial<FieldType>;
-}
-const updateFormList = ({
-    formList,
-    id,
-    updatedItem,
-}: updatedFormListParams): SortableItemProps[] => {
-    const itemIndex = formList.findIndex((item) => item.id === id);
-    if (itemIndex !== -1) {
-        const updatedFormList = formList.map((item, index) =>
-            index === itemIndex ? { ...item, ...updatedItem } : item
-        );
-        return updatedFormList;
-    } else {
-        return formList;
-    }
-};
 
 // Helper function to create a response
 const createResponse = (type: string, form: any, status: number = 200) => {
@@ -94,7 +70,15 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get('id');
     const form = await Forms.findById(id);
-    if (!form) notFound();
+    if (!form) {
+        return new Response(
+            JSON.stringify({
+                error: 'Form not found',
+            }),
+            { status: 404 }
+        );
+    }
+
     const { title, formList } = form;
     const response = {
         formId: id,

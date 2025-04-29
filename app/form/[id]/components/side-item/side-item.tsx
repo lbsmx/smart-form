@@ -1,16 +1,19 @@
 import React, { forwardRef } from 'react';
 import styles from '@/app/form/[id]/components/side-item/side-item.module.css';
 import { SortableItemProps } from '@/app/form/[id]/components/sortable-item/sortable-item';
-import { setFormList, updateForm } from '@/store/form';
+import { updateForm } from '@/store/form';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { v4 as uuidv4 } from 'uuid';
+import { AppDispatch, RootState } from '@/store';
+import { v4 as uuid } from 'uuid';
 
 interface SideItemProps extends SortableItemProps {}
 
 const SideItem = forwardRef<HTMLDivElement, SideItemProps>(
-    ({ listeners, attributes, type, label }, ref) => {
-        const dispatch = useDispatch();
+    (
+        { listeners, attributes, type, label, required, options, ...restProps },
+        ref
+    ) => {
+        const dispatch = useDispatch<AppDispatch>();
         const formList = useSelector((state: RootState) => state.form.formList);
 
         // 添加当前item到form中
@@ -22,11 +25,14 @@ const SideItem = forwardRef<HTMLDivElement, SideItemProps>(
                         updatedFormList: [
                             ...formList,
                             {
-                                id: uuidv4(),
+                                id: uuid(),
                                 sortable: true,
                                 type,
                                 label,
                                 disabled: false,
+                                required,
+                                ...options,
+                                ...restProps,
                             },
                         ],
                     },
@@ -62,5 +68,7 @@ const SideItem = forwardRef<HTMLDivElement, SideItemProps>(
         );
     }
 );
+
+SideItem.displayName = 'SideItem';
 
 export default SideItem;

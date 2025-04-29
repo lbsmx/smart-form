@@ -1,0 +1,24 @@
+/* radio-group.module.css */
+.draggableRadio {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.3s;
+}
+
+.input {
+    flex: 1;
+}
+
+.closeButton {
+    color: inherit;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.closeButton:hover {
+    color: red;
+}

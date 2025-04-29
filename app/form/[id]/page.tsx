@@ -34,7 +34,7 @@ import { setForm, updateForm } from '@/store/form.ts';
 import { AppDispatch, RootState } from '@/store/index.ts';
 import SideItem from './components/side-item/side-item.tsx';
 import _ from 'lodash';
-import { notFound } from 'next/navigation';
+import NotFound from './not-found.tsx';
 
 const screenReaderInstructions: ScreenReaderInstructions = {
     draggable: `
@@ -55,38 +55,13 @@ export default function Template({
         null
     );
     const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
-    const [formItemLib, setFormItemLib] = useState<
-        {
-            label: string;
-            sets: SortableItemProps[];
-        }[]
-    >([
-        {
-            label: '基础控件',
-            sets: [
-                {
-                    id: uuidv4(),
-                    type: 'textInput',
-                    label: '输入框',
-                    sortable: false,
-                    placeholder: '请输入内容',
-                    maxLength: 30,
-                },
-                {
-                    id: uuidv4(),
-                    type: 'numberInput',
-                    label: '数字输入框',
-                    sortable: false,
-                },
-                {
-                    id: uuidv4(),
-                    type: 'textarea',
-                    label: '文本域',
-                    sortable: false,
-                },
-            ],
-        },
-    ]);
+    const [formItemLib, setFormItemLib] = useState<{
+        label: SortableItemProps[];
+    } | null>(null);
+    const [isNotFound, setIsNotFound] = useState<boolean>(false);
+    const [sortableContextItems, setSortableContextItems] = useState<
+        UniqueIdentifier[]
+    >([]);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -109,8 +84,24 @@ export default function Template({
         // 因此在服务端预渲染时拿不到document，需要使用副作用函数保证在客户端获取到document
         if (typeof document !== 'undefined') setPortalRoot(document.body);
         // 配置初始模板
+        getFormLib();
         getForm(id);
     }, []);
+
+    useEffect(() => {
+        if (!formItemLib) return;
+        const formItemLibIds: UniqueIdentifier[] = [];
+        Object.keys(formItemLib).forEach((key) => {
+            const item = formItemLib[key as keyof typeof formItemLib];
+            formItemLibIds.push(
+                ...item.map((set: SortableItemProps) => set.id)
+            );
+        });
+        setSortableContextItems([
+            ...formItemLibIds,
+            ...formList.map((item) => item.id),
+        ]);
+    }, [formItemLib, formList]);
 
     const dropAnimationConfig: DropAnimation = {
         sideEffects: defaultDropAnimationSideEffects({
@@ -122,11 +113,20 @@ export default function Template({
         }),
     };
 
-    const getForm = async (id: string) => {
-        if (!id) notFound();
-        const res = await fetch(`/api/form?id=${id}`);
+    const getFormLib = async () => {
+        const res = await fetch('/api/field');
         if (!res.ok) {
-            throw new Error('Failed to fetch form');
+            throw new Error('Failed to get form lib');
+        }
+        const formItemLib = await res.json();
+        setFormItemLib(formItemLib);
+    };
+
+    const getForm = async (id: string) => {
+        const res = await fetch(`/api/form?id=${id}`);
+        if (res.status === 404) {
+            setIsNotFound(true);
+            return;
         }
         const response = await res.json();
         dispatch(setForm(response));
@@ -240,6 +240,8 @@ export default function Template({
     // 注： 因为侧边栏和主区域共享SortableContext，因此碰撞算法不能使用closestCenter，
     // 否则会在拖拽开始就检测到侧边栏item碰撞到了form item
 
+    if (isNotFound) return <NotFound />;
+
     return (
         <DndContext
             accessibility={{
@@ -250,12 +252,7 @@ export default function Template({
             collisionDetection={rectIntersection}
         >
             <SortableContext
-                items={[
-                    ...formItemLib.reduce((acc: any, cur) => {
-                        return acc.concat(cur.sets.map((item) => item.id));
-                    }, []),
-                    ...formList.map((item) => item.id),
-                ]}
+                items={sortableContextItems}
                 strategy={verticalListSortingStrategy}
             >
                 <div className={styles.page}>

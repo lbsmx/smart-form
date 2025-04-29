@@ -1,7 +1,6 @@
 TODO
 
-1. required
-2. 侧边栏数据存入数据库调用
+1. 多选框 上传组件
 
 ## Getting Started
 
