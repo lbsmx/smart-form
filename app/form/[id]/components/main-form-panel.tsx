@@ -1,21 +1,23 @@
-"use client";
+'use client';
 
-import MainHeader from "./main-header";
-import MainForm from "./main-form";
-import { memo, useState } from "react";
-import FormContext from "./form-context";
+import MainHeader from './main-header';
+import MainForm from './main-form';
+import { CSSProperties, memo } from 'react';
 
 function MainFormPanel(props) {
-  const [editable, setEditable] = useState(true);
+    const style: CSSProperties = {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden',
+    };
 
-  return (
-    <FormContext.Provider value={editable}>
-      <div style={{ height: "100%", overflow: "hidden" }}>
-        <MainHeader></MainHeader>
-        <MainForm formList={props.formList}></MainForm>
-      </div>
-    </FormContext.Provider>
-  );
+    return (
+        <div style={style}>
+            <MainHeader></MainHeader>
+            <MainForm formList={props.formList}></MainForm>
+        </div>
+    );
 }
 
 export default memo(MainFormPanel);

@@ -1,62 +1,84 @@
 .card {
-    padding: 24px;
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    cursor: pointer;
-    aspect-ratio: 8 / 9;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    min-height: 160px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    text-align: center;
 }
 
 .card:hover {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px); /* Subtle lift effect on hover */
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    height: 100%;
+    padding: 8px;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    min-height: 28px;
 }
 
 .cardTitle {
-    font-size: 1.5em; /* Adjusted font size for better contrast */
-    margin-bottom: 12px;
-    color: #222; /* Darker color for better contrast */
-    font-weight: 600; /* Bolder font weight */
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
 }
 
-.fieldList {
-    list-style-type: none;
-    padding: 0;
+.cardTitle :global(h4) {
     margin: 0;
 }
 
-.fieldLabel {
-    margin-bottom: 12px;
-    font-weight: 600;
-    color: #444; /* Slightly darker for better readability */
-    position: relative;
+.fieldList {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 0;
+    flex: 1;
+    max-height: 80px;
+    overflow: hidden;
 }
 
-.fieldLabel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -4px; /* Slightly adjust to align better */
-    right: -4px;
-    bottom: 0;
-    border: 2px solid #007bff; /* Bright blue border */
-    border-radius: 6px; /* Rounded corners */
-    pointer-events: none;
-    opacity: 0.7; /* Slight transparency for modern look */
+.cardFooter {
+    margin-top: auto;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 32px;
 }
 
-.fieldLabelText {
-    display: inline-block;
-    padding: 6px 15px; /* Increased padding for better spacing */
-    width: 100%;
-    background-color: #f9f9f9;
-    z-index: 1;
-    border-radius: 6px; /* Matching rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adding shadow to label */
-    font-size: 0.9em; /* Adjusted font size to make text smaller */
+:global(.ant-tag) {
+    margin: 0 8px 8px 0 !important;
+    padding: 4px 8px !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    height: 28px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+:global(.ant-card) {
+    padding: 0 !important;
+}
+
+:global(.ant-card-body) {
+    padding: 0 !important;
+    height: 100%;
 }

@@ -8,6 +8,7 @@ interface FormState {
     formId: string | undefined;
     formTitle: string;
     formList: SortableItemProps[];
+    editable: boolean;
 }
 
 interface updatedFormListParams {
@@ -74,6 +75,7 @@ export const updateForm = createAsyncThunk(
 const formSlice = createSlice({
     name: 'form',
     initialState: {
+        editable: true,
         formId: undefined,
         formTitle: '表单标题',
         formList: [],
@@ -94,6 +96,9 @@ const formSlice = createSlice({
         },
         setFormList(state, action: PayloadAction<SortableItemProps[]>) {
             state.formList = action.payload;
+        },
+        setEditable(state, action: PayloadAction<boolean>) {
+            state.editable = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -133,6 +138,6 @@ const formSlice = createSlice({
     },
 });
 
-export const { setForm, setFormList } = formSlice.actions;
+export const { setForm, setFormList, setEditable } = formSlice.actions;
 
 export default formSlice.reducer;

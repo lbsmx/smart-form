@@ -44,11 +44,7 @@ const screenReaderInstructions: ScreenReaderInstructions = {
     `,
 };
 
-export default function Template({
-    params,
-}: {
-    params: Promise<{ id: string }>;
-}) {
+export default function Form({ params }: { params: Promise<{ id: string }> }) {
     const { id }: { id: string } = React.use(params);
 
     const [activeItem, setActiveItem] = useState<SortableItemProps | null>(
@@ -161,32 +157,38 @@ export default function Template({
                 const overIndex = formList.findIndex(
                     (item) => item.id === overItem?.id
                 );
-                let newIndex: number;
                 const isBelowOverItem =
                     active.rect.current.translated &&
                     active.rect.current.translated.top >
                         over.rect.top + over.rect.height;
 
                 const modifier = isBelowOverItem ? 1 : 0;
-                newIndex =
+                const newIndex: number =
                     overIndex >= 0 ? overIndex + modifier : formList.length + 1;
                 const copyItems = [...formList];
                 setFormItemLib((item) => {
+                    if (!item) return;
+
                     const copyItem = _.cloneDeep(item);
-                    const activeGroupIndex = copyItem.findIndex(
-                        (item) =>
-                            item.sets.findIndex(
-                                (item) => item.id === active.id
-                            ) > -1
+                    const activeGroupKey = Object.keys(copyItem).find((key) =>
+                        copyItem[key as keyof typeof copyItem]?.some(
+                            (item) => item.id === activeItem.id
+                        )
                     );
-                    const activeGroup = copyItem[activeGroupIndex];
-                    const sets = activeGroup.sets;
-                    const acitveSet = sets.find(
-                        (item) => item.id === activeItem.id
+
+                    if (!activeGroupKey) return;
+
+                    const activeGroup =
+                        copyItem[activeGroupKey as keyof typeof copyItem];
+                    const activeIndex = activeGroup?.findIndex(
+                        (item: SortableItemProps) => item.id === activeItem.id
                     );
-                    if (acitveSet) {
-                        acitveSet.id = uuidv4();
-                    }
+
+                    if (activeIndex === -1 || !activeGroup) return;
+
+                    // 修改 id
+                    activeGroup[activeIndex].id = uuidv4();
+
                     return copyItem;
                 });
                 dispatch(

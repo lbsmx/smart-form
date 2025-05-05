@@ -1,48 +1,91 @@
 /* app/template/page.module.css */
-.pageContainer {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 32px 16px;
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.content {
+    flex: 1;
+    margin-left: 256px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 12px;
+    margin: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
 }
 
 .header {
-    text-align: center;
-    margin-bottom: 32px;
+    padding: 24px;
+    background-color: #fff;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .title {
-    font-size: 2.5rem;
-    margin: 0 0 16px;
-    color: #333333;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: rgba(0, 0, 0, 0.85);
 }
 
 .description {
-    font-size: 1.25rem;
-    color: #666666;
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 .container {
+    flex: 1;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 36px;
-    padding: 0;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 24px;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+    align-content: start;
 }
 
-/* Media Queries */
-@media (min-width: 600px) {
+/* 响应式布局 */
+@media (max-width: 1200px) {
+    .main {
+        margin: 16px;
+    }
+
     .container {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+        padding: 16px;
     }
 }
 
-@media (min-width: 900px) {
-    .container {
-        grid-template-columns: repeat(3, 1fr);
+@media (max-width: 768px) {
+    .content {
+        margin-left: 0;
     }
-}
 
-@media (min-width: 1200px) {
-    .container {
-        grid-template-columns: repeat(4, 1fr);
+    .main {
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .header {
+        padding: 16px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .description {
+        font-size: 14px;
     }
 }

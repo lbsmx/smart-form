@@ -5,5 +5,7 @@ export default interface FieldType {
     label: string;
     type: string;
     required: boolean;
-    [x: string | number]: any;
+    isEditing: boolean;
+    options: Record<string, any>;
+    value: any;
 }

@@ -30,13 +30,7 @@ import {
     restrictToWindowEdges,
 } from '@dnd-kit/modifiers';
 import { v4 as uuid } from 'uuid';
-
-interface RadioGroupProps {
-    id: string;
-    list: any;
-    isEditing: boolean;
-    label: string;
-}
+import FieldType from './field-types';
 
 function DraggableRadio({
     id,
@@ -84,8 +78,9 @@ function DraggableRadio({
     );
 }
 
-export default function RadioGroup(props: RadioGroupProps) {
-    const { isEditing, id, list, label } = props;
+export default function RadioGroup(props: FieldType) {
+    const { isEditing, id, options, label } = props;
+    const { options: list } = options;
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -103,13 +98,17 @@ export default function RadioGroup(props: RadioGroupProps) {
     );
 
     const onValuesChange = (changedValues: any) => {
-        console.log('changedValues', changedValues);
         dispatch(
             updateForm({
                 type: 'formItem',
                 data: {
                     id,
-                    updatedItem: changedValues,
+                    updatedItem: {
+                        options: {
+                            ...options,
+                            ...changedValues,
+                        },
+                    },
                 },
             })
         );
@@ -127,7 +126,10 @@ export default function RadioGroup(props: RadioGroupProps) {
                 data: {
                     id,
                     updatedItem: {
-                        list: updatedList,
+                        options: {
+                            ...options,
+                            list: updatedList,
+                        },
                     },
                 },
             })
@@ -142,7 +144,10 @@ export default function RadioGroup(props: RadioGroupProps) {
                 data: {
                     id,
                     updatedItem: {
-                        list: updatedList,
+                        options: {
+                            ...options,
+                            list: updatedList,
+                        },
                     },
                 },
             })
@@ -159,7 +164,10 @@ export default function RadioGroup(props: RadioGroupProps) {
                 data: {
                     id,
                     updatedItem: {
-                        list: updatedList,
+                        options: {
+                            ...options,
+                            list: updatedList,
+                        },
                     },
                 },
             })
@@ -188,7 +196,10 @@ export default function RadioGroup(props: RadioGroupProps) {
                         data: {
                             id,
                             updatedItem: {
-                                list: updatedList,
+                                options: {
+                                    ...options,
+                                    list: updatedList,
+                                },
                             },
                         },
                     })

@@ -6,8 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { updateForm } from '@/store/form';
 
-export default function FormTitle() {
-    const [isEditing, setIsEditing] = useState(false);
+interface FormTitleProps {
+    editable: boolean;
+}
+
+export default function FormTitle({ editable }: FormTitleProps) {
+    const [isEditing, setIsEditing] = useState<boolean>(false);
     const formTitle = useSelector((state: RootState) => state.form.formTitle);
     const textRef = useRef<HTMLHeadingElement | null>(null);
     const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +24,7 @@ export default function FormTitle() {
     }, [isEditing]);
 
     const handleEdit = () => {
+        if (!editable) return;
         setIsEditing(true);
     };
 
@@ -66,11 +71,13 @@ export default function FormTitle() {
         <div className={styles.formTitleContainer}>
             <h1
                 ref={textRef}
-                contentEditable={isEditing}
+                contentEditable={editable && isEditing}
                 onClick={handleEdit}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
-                className={styles.formTitleText}
+                className={`${styles.formTitleText} ${
+                    editable ? styles.editable : ''
+                }`}
             >
                 {formTitle}
             </h1>

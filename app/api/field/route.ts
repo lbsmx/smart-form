@@ -18,8 +18,9 @@ const convert2Tree = (arr: SideField[]) => {
         const { label, type, required, belong, options } = field;
         switch (type) {
             case 'radioGroup':
-                const { list } = options as {
-                    list: { value: string; label: string }[];
+            case 'checkboxGroup':
+                const { options: list } = options as {
+                    options: { value: string; label: string }[];
                 };
                 list.forEach((item) => {
                     item.value = uuid();

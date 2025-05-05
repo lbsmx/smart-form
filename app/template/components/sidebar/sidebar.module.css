@@ -1,0 +1,106 @@
+.sidebar {
+    width: 256px;
+    background-color: #fff;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    border-right: 1px solid #f0f0f0;
+    box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+}
+
+.title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu {
+    flex: 1;
+    border-right: none;
+    padding: 8px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+:global(.ant-menu-item) {
+    margin: 0 !important;
+    height: 48px !important;
+    line-height: 48px !important;
+    padding: 0 16px !important;
+    border-radius: 4px;
+    margin: 4px 8px !important;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+:global(.ant-menu-item a) {
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    width: 100%;
+    overflow: hidden;
+}
+
+:global(.ant-menu-item .anticon) {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+:global(.ant-menu-item:hover) {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+:global(.ant-menu-item-selected) {
+    background-color: #e6f4ff !important;
+    color: #1677ff !important;
+}
+
+:global(.ant-menu-item-selected::after) {
+    display: none;
+}
+
+:global(.ant-menu-item-selected:hover) {
+    background-color: #e6f4ff !important;
+}
+
+:global(.ant-menu-item-selected a) {
+    color: #1677ff !important;
+}
+
+:global(.ant-menu-item-selected .anticon) {
+    color: #1677ff !important;
+}
+
+/* 自定义滚动条样式 */
+:global(.ant-menu::-webkit-scrollbar) {
+    width: 6px;
+}
+
+:global(.ant-menu::-webkit-scrollbar-thumb) {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+:global(.ant-menu::-webkit-scrollbar-track) {
+    background-color: transparent;
+}

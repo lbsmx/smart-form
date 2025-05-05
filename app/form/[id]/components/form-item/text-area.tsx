@@ -3,19 +3,13 @@ import { Input, Form, InputNumber } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateForm } from '@/store/form';
 import { AppDispatch } from '@/store/index';
+import FieldType from './field-types';
 
 const { TextArea } = Input;
 
-interface TextAreaProps {
-    id: string;
-    placeholder?: string;
-    maxLength?: number;
-    isEditing: boolean;
-    label: string;
-}
-
-export default function Textarea(props: TextAreaProps) {
-    const { isEditing, id, placeholder, maxLength, label } = props;
+export default function Textarea(props: FieldType) {
+    const { isEditing, id, options, label } = props;
+    const { placeholder, maxLength } = options;
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -27,7 +21,12 @@ export default function Textarea(props: TextAreaProps) {
                 type: 'formItem',
                 data: {
                     id,
-                    updatedItem: changedValues,
+                    updatedItem: {
+                        options: {
+                            ...options,
+                            ...changedValues,
+                        },
+                    },
                 },
             })
         );
@@ -40,10 +39,8 @@ export default function Textarea(props: TextAreaProps) {
             {!isEditing && (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <TextArea
-                        rows={4}
                         autoSize={{ minRows: 3, maxRows: 5 }}
                         placeholder={placeholder}
-                        maxLength={effectiveMaxLength}
                         style={{ flex: 1 }}
                     />
                 </div>

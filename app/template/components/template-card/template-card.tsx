@@ -1,16 +1,35 @@
 'use client';
 
-import React from 'react';
-import styles from './template-card.module.css';
+import React, { useState } from 'react';
+import { Card, Tag, Typography, Space, Button } from 'antd';
+import {
+    FormOutlined,
+    PlusOutlined,
+    DownOutlined,
+    UpOutlined,
+} from '@ant-design/icons';
 import FieldType from '@/app/form/[id]/components/form-item/field-types';
 import { v4 as uuid } from 'uuid';
 import { useRouter } from 'next/navigation';
+import styles from './template-card.module.css';
 
-function TemplateCard({ name, fields }) {
+const { Text } = Typography;
+
+interface TemplateCardProps {
+    name: string;
+    fields: FieldType[];
+}
+
+const MAX_VISIBLE_FIELDS = 6;
+
+function TemplateCard({ name, fields }: TemplateCardProps) {
     const router = useRouter();
+    const [isExpanded, setIsExpanded] = useState(false);
+
     const generateId = (fields: FieldType[]) => {
         return fields.map((field) => ({ ...field, id: uuid() }));
     };
+
     const handleTemplateSelect = async (fields: FieldType[]) => {
         const fullFields = generateId(fields);
         const res = await fetch('/api/form', {
@@ -31,22 +50,59 @@ function TemplateCard({ name, fields }) {
         }
     };
 
+    const visibleFields = isExpanded
+        ? fields
+        : fields.slice(0, MAX_VISIBLE_FIELDS);
+    const hasMoreFields = fields.length > MAX_VISIBLE_FIELDS;
+
     return (
-        <div
+        <Card
             className={styles.card}
+            hoverable
             onClick={() => handleTemplateSelect(fields)}
         >
-            <h3 className={styles.cardTitle}>{name}</h3>
-            <ul className={styles.fieldList}>
-                {fields.map((field, index) => (
-                    <li key={index} className={styles.fieldLabel}>
-                        <span className={styles.fieldLabelText}>
-                            {field.label}
-                        </span>
-                    </li>
-                ))}
-            </ul>
-        </div>
+            <div className={styles.cardContent}>
+                <div className={styles.cardHeader}>
+                    <div className={styles.cardTitle}>
+                        <FormOutlined />
+                        <div>{name}</div>
+                    </div>
+                </div>
+                <div className={styles.fieldList}>
+                    <Space size={[0, 8]} wrap>
+                        {visibleFields.map((field, index) => (
+                            <Tag key={index} color="blue">
+                                {field.label}
+                            </Tag>
+                        ))}
+                    </Space>
+                    {hasMoreFields && (
+                        <Button
+                            type="text"
+                            size="small"
+                            className={styles.expandButton}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setIsExpanded(!isExpanded);
+                            }}
+                            icon={
+                                isExpanded ? <UpOutlined /> : <DownOutlined />
+                            }
+                        >
+                            {isExpanded
+                                ? '收起'
+                                : `展开 ${
+                                      fields.length - MAX_VISIBLE_FIELDS
+                                  } 个字段`}
+                        </Button>
+                    )}
+                </div>
+                <div className={styles.cardFooter}>
+                    <Text type="secondary">{fields.length} 个字段</Text>
+                    <PlusOutlined className={styles.createIcon} />
+                </div>
+            </div>
+        </Card>
     );
 }
 

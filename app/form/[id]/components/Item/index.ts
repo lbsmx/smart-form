@@ -9,6 +9,7 @@ export interface ItemProps extends FieldType {
     listeners?: DraggableSyntheticListeners;
     attributes?: any;
     required: boolean;
+    isDragging: boolean;
 }
 
 export default Item;

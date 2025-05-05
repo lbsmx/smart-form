@@ -1,58 +1,64 @@
 .panel {
-  padding: 24px;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  border-right: 1px solid #dee2e6;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* padding: 24px; */
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    width: 0;
+    min-width: 0;
+    height: 100vh;
+    overflow: hidden;
+    border-right: 1px solid #dee2e6;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.panel.editable {
+    width: 100%;
 }
 
 .categoryTitle {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 16px;
-  color: #343a40;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #343a40;
 }
 
 .componentTitle {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #495057;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #495057;
 }
 
 .componentContainer {
-  margin-bottom: 24px;
-  padding: 12px;
-  background-color: #fff;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+    padding: 12px;
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .disabled {
-  position: relative;
-  opacity: 0.7; /* Slightly reduce opacity for disabled state */
+    position: relative;
+    opacity: 0.7; /* Slightly reduce opacity for disabled state */
 }
 
 .disabled::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  z-index: 99;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 99;
 }
 
 .componentContainer:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .itemContainer {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
 }

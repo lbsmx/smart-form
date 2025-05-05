@@ -51,22 +51,41 @@
 
 .handle {
     position: absolute;
-    left: 10px;
-    top: 18px;
+    left: -18px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .labelContainer {
+    position: relative;
     display: flex;
     align-items: center;
     margin-bottom: 8px;
-    line-height: 1;
 }
 
-.requiredIcon {
+.label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.label.required::before {
+    display: inline-block;
+    margin-inline-end: 4px;
     color: #ff4d4f;
-    margin-right: 4px;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
 }
 
 .switchContainer {
+    display: flex;
+    align-items: center;
     margin-left: auto;
+}
+
+.switchText {
+    margin-left: 6px;
+    font-size: 14px;
 }

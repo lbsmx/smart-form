@@ -9,10 +9,7 @@ import { v4 as uuid } from 'uuid';
 interface SideItemProps extends SortableItemProps {}
 
 const SideItem = forwardRef<HTMLDivElement, SideItemProps>(
-    (
-        { listeners, attributes, type, label, required, options, ...restProps },
-        ref
-    ) => {
+    ({ listeners, attributes, type, label, required, options }, ref) => {
         const dispatch = useDispatch<AppDispatch>();
         const formList = useSelector((state: RootState) => state.form.formList);
 
@@ -31,8 +28,7 @@ const SideItem = forwardRef<HTMLDivElement, SideItemProps>(
                                 label,
                                 disabled: false,
                                 required,
-                                ...options,
-                                ...restProps,
+                                options,
                             },
                         ],
                     },
