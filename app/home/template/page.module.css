@@ -1,16 +1,7 @@
-/* app/template/page.module.css */
 .layout {
     display: flex;
     min-height: 100vh;
     background-color: #f5f5f5;
-}
-
-.content {
-    flex: 1;
-    margin-left: 256px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
 .main {

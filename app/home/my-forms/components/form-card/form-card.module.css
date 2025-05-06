@@ -1,0 +1,144 @@
+.card {
+    position: relative;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px); /* Lift up slightly */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow */
+}
+
+.tooltipWrapper {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+    display: none;
+}
+
+.card:hover .tooltipWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.dataIcon {
+    font-size: 18px;
+    color: #666;
+    transition: color 0.2s ease;
+}
+
+.dataIcon:hover {
+    color: #0070f3;
+}
+
+.tooltipText {
+    visibility: hidden;
+    width: max-content;
+    background: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 4px 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* above icon */
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+.tooltipWrapper:hover .tooltipText {
+    visibility: visible;
+    opacity: 1;
+}
+
+.formTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 0.875rem;
+    color: #888;
+}
+
+.fields {
+    height: 200px; /* adjust based on your layout */
+    overflow-y: auto;
+    padding-right: 8px; /* optional: for better visual spacing */
+}
+
+/* Optional: Style scrollbar for better appearance (Chrome only) */
+
+.fields::-webkit-scrollbar {
+    width: 6px;
+}
+
+.fields::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.fields::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.fields::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.field {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.field:last-child {
+    border-bottom: none;
+}
+
+.fieldHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fieldLabel {
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.required {
+    color: #ff4d4f;
+    margin-left: 0.25rem;
+}
+
+.fieldType {
+    color: #666;
+    font-size: 0.8rem;
+    text-transform: capitalize;
+    background: #f5f5f5;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.options {
+    color: #666;
+    font-size: 0.8rem;
+    background: #fafafa;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}

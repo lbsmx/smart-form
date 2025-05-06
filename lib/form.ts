@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 // Define the structure of the form document
 interface FormDocument extends Document {
+    userId: string;
     title: string;
     formList: FieldType[];
 }
@@ -10,6 +11,10 @@ interface FormDocument extends Document {
 // Create a Mongoose schema for the form collection
 const formSchema: Schema<FormDocument> = new Schema(
     {
+        userId: {
+            type: String,
+            required: true,
+        },
         title: {
             type: String,
             required: true,

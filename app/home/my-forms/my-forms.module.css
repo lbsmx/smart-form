@@ -1,0 +1,32 @@
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #1a1a1a;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.empty {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+    border: 1px dashed #ddd;
+    border-radius: 8px;
+}
+
+.error {
+    color: #ff4d4f;
+    text-align: center;
+    padding: 2rem;
+}

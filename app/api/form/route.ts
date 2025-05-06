@@ -4,14 +4,25 @@ import { NextRequest } from 'next/server';
 import { updateFormList } from '@/store/form';
 
 export async function POST(request: NextRequest) {
-    await dbConnect();
-    const { title, fields: formList } = await request.json();
-    const newForm = await Forms.create({ title, formList });
+    try {
+        await dbConnect();
+        const cookie = request.cookies.get('userid');
+        const userId = cookie?.value;
+        const { title, fields: formList } = await request.json();
+        const newForm = await Forms.create({ userId, title, formList });
 
-    const response = {
-        id: newForm._id,
-    };
-    return new Response(JSON.stringify(response), { status: 201 });
+        const response = {
+            id: newForm._id,
+        };
+        return new Response(JSON.stringify(response), { status: 201 });
+    } catch (error) {
+        return new Response(
+            JSON.stringify({
+                error,
+            }),
+            { status: 500 }
+        );
+    }
 }
 
 // Helper function to create a response

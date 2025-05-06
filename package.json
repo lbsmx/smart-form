@@ -17,6 +17,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@reduxjs/toolkit": "^2.7.0",
     "antd": "^5.24.6",
+    "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "mongoose": "^8.13.2",
     "next": "15.2.4",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/formidable": "^3.4.5",
+    "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.16",
     "@types/node": "^20",
     "@types/react": "^19",

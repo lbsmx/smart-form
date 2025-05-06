@@ -11,14 +11,14 @@ export default function Sidebar() {
 
     const items = [
         {
-            key: '/template',
+            key: '/home/template',
             icon: <AppstoreOutlined />,
-            label: <Link href="/template">模板</Link>,
+            label: <Link href="/home/template">模板</Link>,
         },
         {
-            key: '/template/my-forms',
+            key: '/home/my-forms',
             icon: <FormOutlined />,
-            label: <Link href="/template/my-forms">我的表单</Link>,
+            label: <Link href="/home/my-forms">我的表单</Link>,
         },
     ];
 

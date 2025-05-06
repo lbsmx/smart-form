@@ -2,9 +2,6 @@
     width: 256px;
     background-color: #fff;
     height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
     border-right: 1px solid #f0f0f0;
     box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
     transition: all 0.3s ease;
