@@ -31,7 +31,7 @@ export default function FormCard({ form }: { form: Form }) {
                         />
                     </Tooltip>
                 </Link>
-                <Link href={''}>
+                <Link href={`/entry/${form.id}`} target="_blank">
                     <Tooltip title="查看填写数据">
                         <BarChartOutlined className={styles.dataIcon} />
                     </Tooltip>

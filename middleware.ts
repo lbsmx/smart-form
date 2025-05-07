@@ -23,5 +23,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/form/:path*', '/template/:path*'],
+    matcher: '/:path*',
 };

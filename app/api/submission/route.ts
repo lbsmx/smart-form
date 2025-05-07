@@ -1,9 +1,6 @@
-// app/api/submission/route.ts
 import dbConnect from '@/lib/mongodb';
 import Submissions from '@/lib/submission';
 import { NextRequest } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
 import Forms from '@/lib/form';
 
 // 禁用 Next.js 默认的 body parser
@@ -14,6 +11,8 @@ export const config = {
 };
 
 export async function POST(request: NextRequest) {
+    const cookie = request.cookies.get('userid');
+    const userId = cookie?.value;
     await dbConnect();
     const formData = await request.formData();
     const { formId, ...rest } = Object.fromEntries(formData);
@@ -35,11 +34,10 @@ export async function POST(request: NextRequest) {
     });
 
     try {
-        // TODO 补齐userId
         await Submissions.create({
             formId,
             formData: newFormList,
-            userId: undefined,
+            userId,
         });
         return new Response(JSON.stringify({ success: true }), {
             status: 200,

@@ -86,7 +86,7 @@ export default function PreviewForm(props: PreviewFormProps) {
 
             if (!res.ok) throw new Error('提交失败');
 
-            console.log('提交成功');
+            messageApi.success('提交成功');
             sessionStorage.setItem('submitted', '1');
         } catch (error) {
             console.error('提交出错:', error);
