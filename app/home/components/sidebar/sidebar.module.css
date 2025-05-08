@@ -35,7 +35,7 @@
     overflow-x: hidden;
 }
 
-:global(.ant-menu-item a) {
+.sidebar :global(.ant-menu-item a) {
     color: inherit;
     display: flex;
     align-items: center;
@@ -45,46 +45,46 @@
     overflow: hidden;
 }
 
-:global(.ant-menu-item .anticon) {
+.sidebar :global(.ant-menu-item .anticon) {
     font-size: 16px;
     flex-shrink: 0;
 }
 
-:global(.ant-menu-item:hover) {
+.sidebar :global(.ant-menu-item:hover) {
     background-color: rgba(0, 0, 0, 0.04) !important;
 }
 
-:global(.ant-menu-item-selected) {
+.sidebar :global(.ant-menu-item-selected) {
     background-color: #e6f4ff !important;
     color: #1677ff !important;
 }
 
-:global(.ant-menu-item-selected::after) {
+.sidebar :global(.ant-menu-item-selected::after) {
     display: none;
 }
 
-:global(.ant-menu-item-selected:hover) {
+.sidebar :global(.ant-menu-item-selected:hover) {
     background-color: #e6f4ff !important;
 }
 
-:global(.ant-menu-item-selected a) {
+.sidebar :global(.ant-menu-item-selected a) {
     color: #1677ff !important;
 }
 
-:global(.ant-menu-item-selected .anticon) {
+.sidebar :global(.ant-menu-item-selected .anticon) {
     color: #1677ff !important;
 }
 
 /* 自定义滚动条样式 */
-:global(.ant-menu::-webkit-scrollbar) {
+.sidebar :global(.ant-menu::-webkit-scrollbar) {
     width: 6px;
 }
 
-:global(.ant-menu::-webkit-scrollbar-thumb) {
+.sidebar :global(.ant-menu::-webkit-scrollbar-thumb) {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 3px;
 }
 
-:global(.ant-menu::-webkit-scrollbar-track) {
+.sidebar :global(.ant-menu::-webkit-scrollbar-track) {
     background-color: transparent;
 }

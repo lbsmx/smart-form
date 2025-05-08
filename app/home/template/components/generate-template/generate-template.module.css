@@ -89,25 +89,23 @@
     box-shadow: 0 4px 8px rgba(74, 108, 247, 0.3);
 }
 
-.modal {
-    :global(.ant-modal-header) {
-        margin: 0;
-        padding: 0;
-        background: transparent;
-        border: none;
-    }
+.modal :global(.ant-modal-header) {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
 
-    :global(.ant-modal-title) {
-        font-size: 0;
-    }
+.modal :global(.ant-modal-title) {
+    font-size: 0;
+}
 
-    :global(.ant-modal-close) {
-        display: none;
-    }
+.modal :global(.ant-modal-close) {
+    display: none;
+}
 
-    :global(.ant-modal-body) {
-        padding: 0;
-    }
+.modal :global(.ant-modal-body) {
+    padding: 0;
 }
 
 .modalContent {
