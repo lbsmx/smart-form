@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import Item from '../Item/Item.tsx';
 import { SortableItemProps } from './sortable-item';
 import SideItem from '../side-item';

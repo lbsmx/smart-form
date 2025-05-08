@@ -234,7 +234,7 @@ export default function Form({ params }: { params: Promise<{ id: string }> }) {
             setActiveItem(null);
             return undefined;
         },
-        onDragCancel({ active: { id } }) {
+        onDragCancel() {
             return undefined;
         },
     };
