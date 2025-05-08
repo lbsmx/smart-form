@@ -64,16 +64,6 @@
     min-height: 32px;
 }
 
-:global(.ant-tag) {
-    margin: 0 8px 8px 0 !important;
-    padding: 4px 8px !important;
-    font-size: 14px !important;
-    line-height: 1.5 !important;
-    height: 28px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-}
-
 :global(.ant-card) {
     padding: 0 !important;
 }

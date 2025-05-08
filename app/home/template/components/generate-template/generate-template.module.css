@@ -90,16 +90,6 @@
 }
 
 .modal {
-    :global(.ant-modal-content) {
-        padding: 0;
-        background: #fff;
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: 0 16px 40px rgba(74, 108, 247, 0.15);
-        border: 1px solid rgba(74, 108, 247, 0.1);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
     :global(.ant-modal-header) {
         margin: 0;
         padding: 0;

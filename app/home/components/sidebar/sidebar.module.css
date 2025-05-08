@@ -35,19 +35,6 @@
     overflow-x: hidden;
 }
 
-:global(.ant-menu-item) {
-    margin: 0 !important;
-    height: 48px !important;
-    line-height: 48px !important;
-    padding: 0 16px !important;
-    border-radius: 4px;
-    margin: 4px 8px !important;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 :global(.ant-menu-item a) {
     color: inherit;
     display: flex;
