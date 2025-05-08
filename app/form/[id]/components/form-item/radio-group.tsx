@@ -227,7 +227,7 @@ export default function RadioGroup(props: FieldType) {
                         items={list.map((item) => item.value)}
                         strategy={verticalListSortingStrategy}
                     >
-                        {list.map((option, index) => (
+                        {list.map((option) => (
                             <DraggableRadio
                                 key={option.value}
                                 id={option.value}

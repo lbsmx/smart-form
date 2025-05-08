@@ -32,7 +32,7 @@ export default function Textarea(props: FieldType) {
         );
     };
 
-    const effectiveMaxLength = maxLength ? Math.min(maxLength, 500) : 500;
+    // const effectiveMaxLength = maxLength ? Math.min(maxLength, 500) : 500;
 
     return (
         <div style={{ flex: 1 }}>
