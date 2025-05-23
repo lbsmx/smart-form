@@ -16,6 +16,8 @@ TODO:
 
 5. 接入 Deep Seek，支持 AI 生成表单
 
+6. 支持不同表单项的配置
+
 ## 技术栈
 
 1. Next.js
@@ -29,6 +31,8 @@ TODO:
 5. Dnd Kit
 
 6. Vercel
+
+7. MongoDB
 
 ## 蓝图
 
