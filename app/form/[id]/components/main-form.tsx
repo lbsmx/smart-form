@@ -1,15 +1,14 @@
-'use client';
+"use client";
 
-import { Empty, Radio } from 'antd';
-import styles from '@/app/form/[id]/components/styles/main-form.module.css';
-import SortableItem from '@/app/form/[id]/components/sortable-item/sortable-item.tsx';
-import DroppableContainer from './droppable-container/droppable-container';
-import FormTitle from './form-title/form-title';
-import { SortableItemProps } from '@/app/form/[id]/components/sortable-item/sortable-item';
-import PreviewForm from './preview-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/store';
-import { setEditable } from '@/store/form';
+import { Radio } from "antd";
+import styles from "@/app/form/[id]/components/styles/main-form.module.css";
+import DroppableContainer from "./droppable-container/droppable-container";
+import FormTitle from "./form-title/form-title";
+import { SortableItemProps } from "@/app/form/[id]/components/sortable-item/sortable-item";
+import PreviewForm from "./preview-form";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { setEditable } from "@/store/form";
 
 export default function MainForm({
     formList,
@@ -33,23 +32,7 @@ export default function MainForm({
             <div className={styles.form}>
                 <FormTitle editable={editable} />
                 {editable ? (
-                    <DroppableContainer formList={formList}>
-                        {formList.length > 0 ? (
-                            formList.map((item) => (
-                                <SortableItem
-                                    {...item}
-                                    key={item.id}
-                                    sortable={true}
-                                    disabled={!editable}
-                                />
-                            ))
-                        ) : (
-                            <Empty
-                                image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-                                description="No items in the form"
-                            />
-                        )}
-                    </DroppableContainer>
+                    <DroppableContainer formList={formList} />
                 ) : (
                     <PreviewForm formList={formList} />
                 )}

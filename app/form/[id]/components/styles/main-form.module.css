@@ -19,8 +19,7 @@
 
 .form {
     flex: 1;
-    padding: 16px;
     border-radius: 8px;
-    overflow-y: auto;
+    overflow-y: hidden;
     box-shadow: 0 6px 24px rgba(31, 35, 41, 0.08);
 }
