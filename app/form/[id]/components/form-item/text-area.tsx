@@ -16,17 +16,24 @@ export default function Textarea(props: FieldType) {
     const [form] = Form.useForm();
 
     const onValuesChange = (changedValues: any) => {
+        let updatedItem: {
+            label?: string;
+            options?: Record<string, any>;
+        } = {};
+        if ('label' in changedValues) {
+            updatedItem['label'] = changedValues.label;
+        } else {
+            updatedItem['options'] = {
+                ...options,
+                ...changedValues,
+            };
+        }
         dispatch(
             updateForm({
                 type: 'formItem',
                 data: {
                     id,
-                    updatedItem: {
-                        options: {
-                            ...options,
-                            ...changedValues,
-                        },
-                    },
+                    updatedItem,
                 },
             })
         );
@@ -47,22 +54,22 @@ export default function Textarea(props: FieldType) {
             )}
             {isEditing && (
                 <Form
-                    layout="horizontal"
+                    layout='horizontal'
                     form={form}
                     initialValues={{ label, placeholder, maxLength }}
                     onValuesChange={onValuesChange}
                 >
-                    <Form.Item label="表单问题" name="label">
-                        <Input placeholder="请输入标题" />
+                    <Form.Item label='表单问题' name='label'>
+                        <Input placeholder='请输入标题' />
                     </Form.Item>
-                    <Form.Item label="占位文本" name="placeholder">
-                        <Input placeholder="请输入占位文本" />
+                    <Form.Item label='占位文本' name='placeholder'>
+                        <Input placeholder='请输入占位文本' />
                     </Form.Item>
-                    <Form.Item label="最大长度" name="maxLength">
+                    <Form.Item label='最大长度' name='maxLength'>
                         <InputNumber
                             min={1}
                             max={500}
-                            placeholder="请输入文本最大长度，默认最大长度为500"
+                            placeholder='请输入文本最大长度，默认最大长度为500'
                             style={{ width: '100%' }}
                         />
                     </Form.Item>

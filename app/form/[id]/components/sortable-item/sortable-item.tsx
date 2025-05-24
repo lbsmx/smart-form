@@ -1,12 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { memo } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import Item from '../Item/Item.tsx';
 import { SortableItemProps } from './sortable-item';
 import SideItem from '../side-item';
 
-export default function SortableItem(props: SortableItemProps) {
+function SortableItem(props: SortableItemProps) {
+    // useSortable会导致组件更新一次
     const {
         attributes,
         listeners,
@@ -15,8 +16,9 @@ export default function SortableItem(props: SortableItemProps) {
         transition,
         isDragging,
     } = useSortable({ id: props.id, data: props });
+
     const style: React.CSSProperties = {
-        transition: [transition].filter(Boolean).join(', '),
+        transition: [transition].filter(Boolean).join(','),
         transform: transform
             ? `translate(${Math.round(transform.x)}px, ${Math.round(
                   transform.y
@@ -26,21 +28,26 @@ export default function SortableItem(props: SortableItemProps) {
     };
 
     return props.sortable ? (
-        <Item
-            ref={props.disabled ? undefined : setNodeRef}
-            {...props}
-            style={style}
-            attributes={attributes}
-            listeners={listeners}
-            isDragging={isDragging}
-        ></Item>
+        // 将style绑定到父元素上并在Item内部添加memo防止组件在拖拽时频繁更新导致卡顿
+        <div style={style}>
+            <Item
+                ref={props.disabled ? undefined : setNodeRef}
+                {...props}
+                attributes={attributes}
+                listeners={listeners}
+                isDragging={isDragging}
+            ></Item>
+        </div>
     ) : (
-        <SideItem
-            ref={props.disabled ? undefined : setNodeRef}
-            {...props}
-            style={style}
-            attributes={attributes}
-            listeners={listeners}
-        />
+        <div style={style}>
+            <SideItem
+                ref={props.disabled ? undefined : setNodeRef}
+                {...props}
+                attributes={attributes}
+                listeners={listeners}
+            />
+        </div>
     );
 }
+
+export default memo(SortableItem);

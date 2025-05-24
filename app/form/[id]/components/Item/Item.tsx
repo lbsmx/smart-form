@@ -47,7 +47,6 @@ const Item = forwardRef<HTMLElement, ItemProps>(
             required,
             label,
             options,
-            style,
         },
         ref
     ) => {
@@ -112,7 +111,6 @@ const Item = forwardRef<HTMLElement, ItemProps>(
                 {...(!sortable ? listeners : undefined)}
                 tabIndex={!sortable ? 0 : undefined}
                 {...attributes}
-                style={style}
             >
                 <div className={styles.labelContainer}>
                     {!sortable || isEditing ? null : (
@@ -129,15 +127,15 @@ const Item = forwardRef<HTMLElement, ItemProps>(
                             </label>
                             <div className={styles.switchContainer}>
                                 <Switch
-                                    size="small"
+                                    size='small'
                                     checked={required}
                                     onChange={onRequiredChange}
                                 />
                                 <span className={styles.switchText}>必填</span>
                             </div>
                             <Button
-                                type="text"
-                                size="small"
+                                type='text'
+                                size='small'
                                 icon={<CloseOutlined />}
                                 style={{ marginLeft: '8px' }}
                                 onClick={handleDelete}

@@ -14,7 +14,7 @@ export default function DroppableContainer(props) {
 
     return (
         <div
-            className="droppable-container"
+            className='droppable-container'
             ref={setNodeRef}
             {...attributes}
             style={{

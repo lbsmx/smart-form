@@ -3,8 +3,9 @@
 import MainHeader from './main-header';
 import MainForm from './main-form';
 import { CSSProperties, memo } from 'react';
+import { SortableItemProps } from './sortable-item/sortable-item';
 
-function MainFormPanel(props) {
+function MainFormPanel({ formList }: { formList: SortableItemProps[] }) {
     const style: CSSProperties = {
         display: 'flex',
         flexDirection: 'column',
@@ -15,7 +16,7 @@ function MainFormPanel(props) {
     return (
         <div style={style}>
             <MainHeader></MainHeader>
-            <MainForm formList={props.formList}></MainForm>
+            <MainForm formList={formList}></MainForm>
         </div>
     );
 }
