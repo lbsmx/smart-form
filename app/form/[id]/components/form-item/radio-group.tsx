@@ -15,19 +15,78 @@ import {
     useSensor,
     useSensors,
 } from '@dnd-kit/core';
-import {
-    arrayMove,
-    SortableContext,
-    sortableKeyboardCoordinates,
-    useSortable,
-    verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { CloseOutlined } from '@ant-design/icons';
 import styles from './radio-group.module.css';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { v4 as uuid } from 'uuid';
 import FieldType from './field-types';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+
+// 👇 将原本写在 map 里的组件提取为一个独立的函数组件
+const SortableOption = ({
+    option,
+    index,
+    currentList,
+    form,
+    handleChange,
+    handleDeleteOption,
+}) => {
+    const { value, label } = option;
+
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: value });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
+
+    return (
+        <Form.Item
+            key={value}
+            name={['options', 'list', index, 'label']}
+            noStyle
+        >
+            <div
+                ref={setNodeRef}
+                {...attributes}
+                style={style}
+                className={styles.draggableRadio}
+            >
+                <Handle listeners={listeners} />
+                <Input
+                    value={label}
+                    onChange={(e) => {
+                        const updatedList = [...currentList];
+                        updatedList[index].label = e.target.value;
+                        form.setFieldsValue({
+                            options: {
+                                ...form.getFieldValue('options'),
+                                list: updatedList,
+                            },
+                        });
+                        handleChange();
+                    }}
+                    className={styles.input}
+                />
+                <Button
+                    type='text'
+                    icon={<CloseOutlined />}
+                    className={styles.closeButton}
+                    onClick={() => handleDeleteOption(value)}
+                />
+            </div>
+        </Form.Item>
+    );
+};
 
 export default function RadioGroup(props: FieldType) {
     const { isEditing, id, options, label } = props;
@@ -142,69 +201,17 @@ export default function RadioGroup(props: FieldType) {
                     items={currentList.map((item) => item.value)}
                     strategy={verticalListSortingStrategy}
                 >
-                    {currentList.map((option, index) => {
-                        const { value, label } = option;
-
-                        const {
-                            attributes,
-                            listeners,
-                            setNodeRef,
-                            transform,
-                            transition,
-                            isDragging,
-                        } = useSortable({ id: value });
-
-                        const style = {
-                            transform: CSS.Transform.toString(transform),
-                            transition,
-                            opacity: isDragging ? 0.5 : 1,
-                        };
-
-                        return (
-                            <Form.Item
-                                key={value}
-                                name={['options', 'list', index, 'label']}
-                                noStyle
-                            >
-                                <div
-                                    ref={setNodeRef}
-                                    {...attributes}
-                                    style={style}
-                                    className={styles.draggableRadio}
-                                >
-                                    <Handle listeners={listeners} />
-                                    <Input
-                                        value={label}
-                                        onChange={(e) => {
-                                            const updatedList = [
-                                                ...currentList,
-                                            ];
-                                            updatedList[index].label =
-                                                e.target.value;
-                                            form.setFieldsValue({
-                                                options: {
-                                                    ...form.getFieldValue(
-                                                        'options'
-                                                    ),
-                                                    list: updatedList,
-                                                },
-                                            });
-                                            handleChange();
-                                        }}
-                                        className={styles.input}
-                                    />
-                                    <Button
-                                        type='text'
-                                        icon={<CloseOutlined />}
-                                        className={styles.closeButton}
-                                        onClick={() =>
-                                            handleDeleteOption(value)
-                                        }
-                                    />
-                                </div>
-                            </Form.Item>
-                        );
-                    })}
+                    {currentList.map((option, index) => (
+                        <SortableOption
+                            key={option.value}
+                            option={option}
+                            index={index}
+                            currentList={currentList}
+                            form={form}
+                            handleChange={handleChange}
+                            handleDeleteOption={handleDeleteOption}
+                        />
+                    ))}
                 </SortableContext>
             </DndContext>
         );

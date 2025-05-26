@@ -1,7 +1,7 @@
 'use client';
 
 import { Input, InputNumber, Form } from 'antd';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FormUpdateType, updateForm } from '@/store/form';
 import { AppDispatch } from '@/store/index';
