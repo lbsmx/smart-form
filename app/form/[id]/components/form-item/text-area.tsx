@@ -1,53 +1,55 @@
-import React from 'react';
-import { Input, Form, InputNumber } from 'antd';
+'use client';
+
+import { Input, InputNumber, Form } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateForm } from '@/store/form';
+import { FormUpdateType, updateForm } from '@/store/form';
 import { AppDispatch } from '@/store/index';
 import FieldType from './field-types';
 
-const { TextArea } = Input;
-
-export default function Textarea(props: FieldType) {
+export default function TextAreaInput(props: FieldType) {
     const { isEditing, id, options, label } = props;
     const { placeholder, maxLength } = options;
 
     const dispatch = useDispatch<AppDispatch>();
-
     const [form] = Form.useForm();
+    const [changed, setChanged] = useState<boolean>(false);
+    const [formData, setFormData] = useState(null);
 
-    const onValuesChange = (changedValues: any) => {
-        let updatedItem: {
-            label?: string;
-            options?: Record<string, any>;
-        } = {};
-        if ('label' in changedValues) {
-            updatedItem['label'] = changedValues.label;
-        } else {
-            updatedItem['options'] = {
-                ...options,
-                ...changedValues,
-            };
+    // 当退出编辑模式且有更改时触发更新
+    useEffect(() => {
+        if (!isEditing && changed) {
+            handleUpdate();
+            setChanged(false);
         }
+    }, [isEditing, changed]);
+
+    const handleUpdate = () => {
         dispatch(
             updateForm({
-                type: 'formItem',
+                type: FormUpdateType.UpdateItem,
                 data: {
                     id,
-                    updatedItem,
+                    old: { label, options },
+                    updated: formData,
                 },
             })
         );
     };
 
-    // const effectiveMaxLength = maxLength ? Math.min(maxLength, 500) : 500;
+    const handleChange = () => {
+        setFormData(form.getFieldsValue());
+        setChanged(true);
+    };
 
     return (
         <div style={{ flex: 1 }}>
             {!isEditing && (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <TextArea
-                        autoSize={{ minRows: 3, maxRows: 5 }}
+                    <Input.TextArea
                         placeholder={placeholder}
+                        rows={3}
+                        maxLength={maxLength}
                         style={{ flex: 1 }}
                     />
                 </div>
@@ -56,20 +58,23 @@ export default function Textarea(props: FieldType) {
                 <Form
                     layout='horizontal'
                     form={form}
-                    initialValues={{ label, placeholder, maxLength }}
-                    onValuesChange={onValuesChange}
+                    initialValues={{ label, options }}
+                    onChange={handleChange}
                 >
                     <Form.Item label='表单问题' name='label'>
                         <Input placeholder='请输入标题' />
                     </Form.Item>
-                    <Form.Item label='占位文本' name='placeholder'>
+                    <Form.Item
+                        label='占位文本'
+                        name={['options', 'placeholder']}
+                    >
                         <Input placeholder='请输入占位文本' />
                     </Form.Item>
-                    <Form.Item label='最大长度' name='maxLength'>
+                    <Form.Item label='最大长度' name={['options', 'maxLength']}>
                         <InputNumber
                             min={1}
-                            max={500}
-                            placeholder='请输入文本最大长度，默认最大长度为500'
+                            max={1000}
+                            placeholder='请输入最大长度，默认为1000'
                             style={{ width: '100%' }}
                         />
                     </Form.Item>

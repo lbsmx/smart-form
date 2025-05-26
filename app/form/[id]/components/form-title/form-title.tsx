@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './form-title.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
-import { updateForm } from '@/store/form';
+import { FormUpdateType, updateForm } from '@/store/form';
 
 interface FormTitleProps {
     editable: boolean;
@@ -37,8 +37,9 @@ export default function FormTitle({ editable }: FormTitleProps) {
             } else {
                 dispatch(
                     updateForm({
-                        type: 'formTitle',
+                        type: FormUpdateType.UpdateTitle,
                         data: {
+                            oldTitle: formTitle,
                             formTitle: trimmedTitle,
                         },
                     })

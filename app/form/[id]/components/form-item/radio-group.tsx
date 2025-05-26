@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Button, Form } from 'antd';
 import { useDispatch } from 'react-redux';
-import { updateForm } from '@/store/form';
+import { updateForm, FormUpdateType } from '@/store/form';
 import { AppDispatch } from '@/store/index';
 import Handle from '../Item/components/Handle';
 import {
@@ -25,93 +25,52 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { CloseOutlined } from '@ant-design/icons';
 import styles from './radio-group.module.css';
-import {
-    restrictToVerticalAxis,
-    restrictToWindowEdges,
-} from '@dnd-kit/modifiers';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { v4 as uuid } from 'uuid';
 import FieldType from './field-types';
 
-function DraggableRadio({
-    id,
-    label,
-    onDelete,
-    onOptionChange,
-}: {
-    id: string;
-    label: string;
-    onDelete: () => void;
-    onOptionChange: (value: string) => void;
-}) {
-    const { attributes, listeners, setNodeRef, transform, transition } =
-        useSortable({ id });
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onOptionChange(e.target.value);
-    };
-
-    return (
-        <div
-            ref={setNodeRef}
-            {...attributes}
-            style={style}
-            className={styles.draggableRadio}
-        >
-            <Handle listeners={listeners} />
-            <Input
-                value={label}
-                onChange={handleInputChange}
-                className={styles.input}
-            />
-            <Button
-                type="text"
-                icon={<CloseOutlined />}
-                className={styles.closeButton}
-                onClick={onDelete}
-            />
-        </div>
-    );
-}
-
 export default function RadioGroup(props: FieldType) {
     const { isEditing, id, options, label } = props;
-    const { options: list } = options;
+    const { list } = options;
 
     const dispatch = useDispatch<AppDispatch>();
-
     const [form] = Form.useForm();
+    const [changed, setChanged] = useState(false);
+    const [formData, setFormData] = useState(null);
 
+    // 👇 将 sensor 提到顶层定义，确保只在组件顶层调用
     const sensors = useSensors(
         useSensor(PointerSensor, {
-            activationConstraint: {
-                distance: 15,
-            },
+            activationConstraint: { distance: 15 },
         }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
 
-    const onValuesChange = (changedValues: any) => {
+    // 仅在退出编辑且有变更时更新
+    useEffect(() => {
+        if (!isEditing && changed) {
+            handleUpdate();
+            setChanged(false);
+        }
+    }, [isEditing, changed]);
+
+    const handleUpdate = () => {
         dispatch(
             updateForm({
-                type: 'formItem',
+                type: FormUpdateType.UpdateItem,
                 data: {
                     id,
-                    updatedItem: {
-                        options: {
-                            ...options,
-                            ...changedValues,
-                        },
-                    },
+                    updated: formData,
                 },
             })
         );
+    };
+
+    const handleChange = () => {
+        setFormData(form.getFieldsValue());
+        setChanged(true);
     };
 
     const handleAddOption = () => {
@@ -119,130 +78,135 @@ export default function RadioGroup(props: FieldType) {
             value: uuid(),
             label: '新选项',
         };
-        const updatedList = [...list, newOption];
-        dispatch(
-            updateForm({
-                type: 'formItem',
-                data: {
-                    id,
-                    updatedItem: {
-                        options: {
-                            ...options,
-                            list: updatedList,
-                        },
-                    },
-                },
-            })
-        );
+        const currentList = form.getFieldValue(['options', 'list']) || [];
+        const updatedList = [...currentList, newOption];
+        form.setFieldsValue({
+            options: {
+                ...form.getFieldValue('options'),
+                list: updatedList,
+            },
+        });
+        handleChange();
     };
 
     const handleDeleteOption = (optionId: string) => {
-        const updatedList = list.filter((item) => item.value !== optionId);
-        dispatch(
-            updateForm({
-                type: 'formItem',
-                data: {
-                    id,
-                    updatedItem: {
+        const currentList = form.getFieldValue(['options', 'list']) || [];
+        const updatedList = currentList.filter(
+            (item) => item.value !== optionId
+        );
+        form.setFieldsValue({
+            options: {
+                ...form.getFieldValue('options'),
+                list: updatedList,
+            },
+        });
+        handleChange();
+    };
+
+    const RenderOptions = () => {
+        const currentList = form.getFieldValue(['options', 'list']) || [];
+
+        const announcements: Announcements = {
+            onDragEnd: ({ active, over }) => {
+                if (active && over && active.id !== over.id) {
+                    const activeIndex = currentList.findIndex(
+                        (item) => item.value === active.id
+                    );
+                    const overIndex = currentList.findIndex(
+                        (item) => item.value === over.id
+                    );
+                    const updatedList = arrayMove(
+                        currentList,
+                        activeIndex,
+                        overIndex
+                    );
+                    form.setFieldsValue({
                         options: {
-                            ...options,
+                            ...form.getFieldValue('options'),
                             list: updatedList,
                         },
-                    },
-                },
-            })
-        );
-    };
+                    });
+                    handleChange();
+                }
+            },
+        };
 
-    const handleOptionChange = (optionId: string, value: string) => {
-        const updatedList = list.map((item) =>
-            item.value === optionId ? { ...item, label: value } : item
-        );
-        dispatch(
-            updateForm({
-                type: 'formItem',
-                data: {
-                    id,
-                    updatedItem: {
-                        options: {
-                            ...options,
-                            list: updatedList,
-                        },
-                    },
-                },
-            })
-        );
-    };
-
-    const announcements: Announcements = {
-        onDragStart: () => {
-            return undefined;
-        },
-        onDragOver: () => {
-            return undefined;
-        },
-        onDragEnd: ({ active, over }) => {
-            if (active && over && active.id !== over.id) {
-                const activeIndex = list.findIndex(
-                    (item) => item.value === active.id
-                );
-                const overIndex = list.findIndex(
-                    (item) => item.value === over.id
-                );
-                const updatedList = arrayMove(list, activeIndex, overIndex);
-                dispatch(
-                    updateForm({
-                        type: 'formItem',
-                        data: {
-                            id,
-                            updatedItem: {
-                                options: {
-                                    ...options,
-                                    list: updatedList,
-                                },
-                            },
-                        },
-                    })
-                );
-            }
-            return undefined;
-        },
-        onDragCancel: () => {
-            return undefined;
-        },
-    };
-
-    const renderOptions = () => {
         return (
-            <>
-                <DndContext
-                    accessibility={{
-                        announcements,
-                    }}
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+            <DndContext
+                accessibility={{ announcements }}
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                modifiers={[restrictToVerticalAxis]}
+            >
+                <SortableContext
+                    items={currentList.map((item) => item.value)}
+                    strategy={verticalListSortingStrategy}
                 >
-                    <SortableContext
-                        items={list.map((item) => item.value)}
-                        strategy={verticalListSortingStrategy}
-                    >
-                        {list.map((option) => (
-                            <DraggableRadio
-                                key={option.value}
-                                id={option.value}
-                                label={option.label}
-                                onDelete={() =>
-                                    handleDeleteOption(option.value)
-                                }
-                                onOptionChange={(value: string) =>
-                                    handleOptionChange(option.value, value)
-                                }
-                            />
-                        ))}
-                    </SortableContext>
-                </DndContext>
-            </>
+                    {currentList.map((option, index) => {
+                        const { value, label } = option;
+
+                        const {
+                            attributes,
+                            listeners,
+                            setNodeRef,
+                            transform,
+                            transition,
+                            isDragging,
+                        } = useSortable({ id: value });
+
+                        const style = {
+                            transform: CSS.Transform.toString(transform),
+                            transition,
+                            opacity: isDragging ? 0.5 : 1,
+                        };
+
+                        return (
+                            <Form.Item
+                                key={value}
+                                name={['options', 'list', index, 'label']}
+                                noStyle
+                            >
+                                <div
+                                    ref={setNodeRef}
+                                    {...attributes}
+                                    style={style}
+                                    className={styles.draggableRadio}
+                                >
+                                    <Handle listeners={listeners} />
+                                    <Input
+                                        value={label}
+                                        onChange={(e) => {
+                                            const updatedList = [
+                                                ...currentList,
+                                            ];
+                                            updatedList[index].label =
+                                                e.target.value;
+                                            form.setFieldsValue({
+                                                options: {
+                                                    ...form.getFieldValue(
+                                                        'options'
+                                                    ),
+                                                    list: updatedList,
+                                                },
+                                            });
+                                            handleChange();
+                                        }}
+                                        className={styles.input}
+                                    />
+                                    <Button
+                                        type='text'
+                                        icon={<CloseOutlined />}
+                                        className={styles.closeButton}
+                                        onClick={() =>
+                                            handleDeleteOption(value)
+                                        }
+                                    />
+                                </div>
+                            </Form.Item>
+                        );
+                    })}
+                </SortableContext>
+            </DndContext>
         );
     };
 
@@ -250,28 +214,33 @@ export default function RadioGroup(props: FieldType) {
         <div style={{ flex: 1 }}>
             {!isEditing && (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Input placeholder="请选择选项" style={{ flex: 1 }} />
+                    <Input placeholder='请选择选项' style={{ flex: 1 }} />
                 </div>
             )}
             {isEditing && (
                 <Form
-                    layout="horizontal"
+                    layout='horizontal'
                     form={form}
-                    initialValues={{ label }}
-                    onValuesChange={onValuesChange}
+                    initialValues={{
+                        label,
+                        options: {
+                            list,
+                        },
+                    }}
+                    onChange={handleChange}
                 >
-                    <Form.Item label="表单问题" name="label">
-                        <Input placeholder="请输入标题" />
+                    <Form.Item label='表单问题' name='label'>
+                        <Input placeholder='请输入标题' />
                     </Form.Item>
-                    <Form.Item label="选项内容">
+                    <Form.Item label='选项内容'>
                         <Button
-                            type="text"
+                            type='text'
                             onClick={handleAddOption}
                             style={{ color: 'rgb(20, 86, 240)' }}
                         >
                             + 添加选项
                         </Button>
-                        {renderOptions()}
+                        <RenderOptions />
                     </Form.Item>
                 </Form>
             )}

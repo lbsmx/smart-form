@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import FieldType from '@/app/form/[id]/components/form-item/field-types';
+import HistoryManager from '@/utils/history-manager';
 
 interface FormState {
     formId: string | undefined;
@@ -14,18 +15,18 @@ interface FormState {
 interface updatedFormListParams {
     formList: SortableItemProps[];
     id: UniqueIdentifier;
-    updatedItem: Partial<FieldType>;
+    updated: Partial<FieldType>;
 }
 
 export const updateFormList = ({
     formList,
     id,
-    updatedItem,
+    updated,
 }: updatedFormListParams): SortableItemProps[] => {
     const itemIndex = formList.findIndex((item) => item.id === id);
     if (itemIndex !== -1) {
         const updatedFormList = formList.map((item, index) =>
-            index === itemIndex ? { ...item, ...updatedItem } : item
+            index === itemIndex ? { ...item, ...updated } : item
         );
         return updatedFormList;
     } else {
@@ -33,15 +34,25 @@ export const updateFormList = ({
     }
 };
 
+export enum FormUpdateType {
+    UpdateItem = 'formItem/update',
+    DeleteItem = 'formItem/delete',
+    AddItem = 'formItem/add',
+    SortList = 'formList/sort',
+    UpdateTitle = 'formTitle/update',
+}
+
 export const updateForm = createAsyncThunk(
     'form/updateForm',
     async (
         {
             type,
             data,
+            history = false, // 确认是否是由于undo/redo而导致表单更新，默认为false
         }: {
-            type: string;
+            type: FormUpdateType;
             data: any;
+            history?: boolean;
         },
         thunkAPI
     ) => {
@@ -56,10 +67,7 @@ export const updateForm = createAsyncThunk(
                 body: JSON.stringify({
                     formId: formState.formId,
                     type,
-                    data: {
-                        ...data,
-                        formList: formState.formList,
-                    },
+                    data,
                 }),
             });
             if (!res.ok) {
@@ -71,6 +79,9 @@ export const updateForm = createAsyncThunk(
         }
     }
 );
+
+// 声明undo/redo实例
+export const historyManager = new HistoryManager();
 
 const formSlice = createSlice({
     name: 'form',
@@ -104,36 +115,58 @@ const formSlice = createSlice({
     extraReducers: (builder) => {
         // pending状态下乐观更新数据，防止拖拽等行为发生意料之外的效果
         builder.addCase(updateForm.pending, (state, action) => {
-            const { type, data } = action.meta.arg;
+            const { type, data, history } = action.meta.arg;
+            // 如果不是由于undo/redo而导致表单更新，才添加到historyManager中
+            // 以防止操作被重复记录
+            if (!history) {
+                historyManager.add({ action: type, data });
+            }
             switch (type) {
-                case 'formItem':
+                case FormUpdateType.UpdateItem:
                     const updatedFormList = updateFormList({
                         formList: state.formList,
                         id: data.id,
-                        updatedItem: data.updatedItem,
+                        updated: data.updated,
                     });
                     state.formList = updatedFormList;
                     break;
-                case 'formList':
-                    state.formList = data.updatedFormList;
+                case FormUpdateType.AddItem:
+                    const { index, newItem } = data;
+                    state.formList = [
+                        ...state.formList.slice(0, index),
+                        newItem,
+                        ...state.formList.slice(index),
+                    ];
                     break;
-                case 'formTitle':
+                case FormUpdateType.DeleteItem:
+                    state.formList = state.formList.filter(
+                        (item) => item.id !== data.item.id
+                    );
+                    break;
+                case FormUpdateType.SortList:
+                    const copyFormList = [...state.formList];
+                    const [moveItem] = copyFormList.splice(data.oldIndex, 1);
+                    copyFormList.splice(data.newIndex, 0, moveItem);
+                    state.formList = copyFormList;
+                    break;
+                case FormUpdateType.UpdateTitle:
                     state.formTitle = data.formTitle;
                     break;
             }
         });
+        // TODO
         builder.addCase(updateForm.fulfilled, (state, action) => {
             // TODO 在header更新状态
-            const { type, form } = action.payload;
-            switch (type) {
-                case 'formItem':
-                case 'formList':
-                    state.formList = form.formList;
-                    break;
-                case 'formTitle':
-                    state.formTitle = form.title;
-                    break;
-            }
+            // const { type, form } = action.payload;
+            // switch (type) {
+            //     case 'formItem':
+            //     case 'formList':
+            //         state.formList = form.formList;
+            //         break;
+            //     case 'formTitle':
+            //         state.formTitle = form.title;
+            //         break;
+            // }
         });
     },
 });

@@ -19,7 +19,6 @@ import {
     rectIntersection,
 } from '@dnd-kit/core';
 import {
-    arrayMove,
     sortableKeyboardCoordinates,
     SortableContext,
     verticalListSortingStrategy,
@@ -30,7 +29,7 @@ import Item from './components/Item/Item.tsx';
 import { SortableItemProps } from './components/sortable-item/sortable-item';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
-import { setForm, updateForm } from '@/store/form.ts';
+import { FormUpdateType, setForm, updateForm } from '@/store/form.ts';
 import { AppDispatch, RootState } from '@/store/index.ts';
 import SideItem from './components/side-item/side-item.tsx';
 import _ from 'lodash';
@@ -165,7 +164,6 @@ export default function Form({ params }: { params: Promise<{ id: string }> }) {
                 const modifier = isBelowOverItem ? 1 : 0;
                 const newIndex: number =
                     overIndex >= 0 ? overIndex + modifier : formList.length + 1;
-                const copyItems = [...formList];
                 setFormItemLib((item) => {
                     if (!item) return;
 
@@ -193,13 +191,10 @@ export default function Form({ params }: { params: Promise<{ id: string }> }) {
                 });
                 dispatch(
                     updateForm({
-                        type: 'formList',
+                        type: FormUpdateType.AddItem,
                         data: {
-                            updatedFormList: [
-                                ...copyItems.slice(0, newIndex),
-                                activeItem,
-                                ...copyItems.slice(newIndex),
-                            ],
+                            index: newIndex,
+                            newItem: activeItem,
                         },
                     })
                 );
@@ -217,13 +212,10 @@ export default function Form({ params }: { params: Promise<{ id: string }> }) {
                 );
                 dispatch(
                     updateForm({
-                        type: 'formList',
+                        type: FormUpdateType.SortList,
                         data: {
-                            updatedFormList: arrayMove(
-                                formList,
-                                oldIndex,
-                                newIndex
-                            ),
+                            oldIndex,
+                            newIndex,
                         },
                     })
                 );

@@ -10,7 +10,6 @@ import PreviewForm from './preview-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { setEditable } from '@/store/form';
-
 export default function MainForm({
     formList,
 }: {
@@ -18,6 +17,8 @@ export default function MainForm({
 }) {
     const dispatch = useDispatch<AppDispatch>();
     const editable = useSelector((state: RootState) => state.form.editable);
+
+    console.log(formList)
 
     return (
         <div className={styles.formContainer}>
@@ -45,8 +46,8 @@ export default function MainForm({
                             ))
                         ) : (
                             <Empty
-                                image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-                                description="No items in the form"
+                                image='https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg'
+                                description='No items in the form'
                             />
                         )}
                     </DroppableContainer>

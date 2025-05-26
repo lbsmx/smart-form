@@ -10,7 +10,7 @@ import { ItemProps } from './index';
 import { Button, Switch } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
-import { updateForm } from '@/store/form';
+import { FormUpdateType, updateForm } from '@/store/form';
 import RadioGroup from '../form-item/radio-group';
 import CheckboxGroup from '../form-item/checkbox-group';
 import { CloseOutlined } from '@ant-design/icons';
@@ -79,10 +79,10 @@ const Item = forwardRef<HTMLElement, ItemProps>(
         const onRequiredChange = (checked: boolean) => {
             dispatch(
                 updateForm({
-                    type: 'formItem',
+                    type: FormUpdateType.UpdateItem,
                     data: {
                         id,
-                        updatedItem: { required: checked },
+                        updated: { required: checked },
                     },
                 })
             );
@@ -91,11 +91,10 @@ const Item = forwardRef<HTMLElement, ItemProps>(
         const handleDelete = () => {
             dispatch(
                 updateForm({
-                    type: 'formList',
+                    type: FormUpdateType.DeleteItem,
                     data: {
-                        updatedFormList: formList.filter(
-                            (item) => item.id !== id
-                        ),
+                        index: formList.findIndex((item) => item.id === id),
+                        item: formList.find((item) => item.id === id),
                     },
                 })
             );

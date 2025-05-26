@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import styles from '@/app/form/[id]/components/side-item/side-item.module.css';
 import { SortableItemProps } from '@/app/form/[id]/components/sortable-item/sortable-item';
-import { updateForm } from '@/store/form';
+import { FormUpdateType, updateForm } from '@/store/form';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { v4 as uuid } from 'uuid';
@@ -17,20 +17,18 @@ const SideItem = forwardRef<HTMLDivElement, SideItemProps>(
         const handleClick = () => {
             dispatch(
                 updateForm({
-                    type: 'formList',
+                    type: FormUpdateType.AddItem,
                     data: {
-                        updatedFormList: [
-                            ...formList,
-                            {
-                                id: uuid(),
-                                sortable: true,
-                                type,
-                                label,
-                                disabled: false,
-                                required,
-                                options,
-                            },
-                        ],
+                        index: formList.length,
+                        newItem: {
+                            id: uuid(),
+                            sortable: true,
+                            type,
+                            label,
+                            disabled: false,
+                            required,
+                            options,
+                        },
                     },
                 })
             );

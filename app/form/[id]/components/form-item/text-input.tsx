@@ -1,42 +1,50 @@
 'use client';
 
 import { Input, InputNumber, Form } from 'antd';
-import React from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateForm } from '@/store/form';
+import { FormUpdateType, updateForm } from '@/store/form';
 import { AppDispatch } from '@/store/index';
 import FieldType from './field-types';
 
 export default function TextInput(props: FieldType) {
     const { isEditing, id, options, label } = props;
-    const { placeholder, maxLength } = options;
+    const { placeholder } = options;
 
     const dispatch = useDispatch<AppDispatch>();
 
     const [form] = Form.useForm();
 
-    const onValuesChange = (changedValues: any) => {
-        let updatedItem: {
-            label?: string;
-            options?: Record<string, any>;
-        } = {};
-        if ('label' in changedValues) {
-            updatedItem['label'] = changedValues.label;
-        } else {
-            updatedItem['options'] = {
-                ...options,
-                ...changedValues,
-            };
+    const [changed, setChanged] = useState<boolean>(false);
+
+    const [formData, setFormData] = useState(null);
+
+    useEffect(() => {
+        if (!isEditing && changed) {
+            handleUpdate();
+            setChanged(false);
         }
+    }, [isEditing, changed]);
+
+    const handleUpdate = () => {
         dispatch(
             updateForm({
-                type: 'formItem',
+                type: FormUpdateType.UpdateItem,
                 data: {
                     id,
-                    updatedItem,
+                    old: {
+                        label,
+                        options,
+                    },
+                    updated: formData,
                 },
             })
         );
+    };
+
+    const handleChange = () => {
+        setFormData(form.getFieldsValue());
+        setChanged(true);
     };
 
     return (
@@ -50,19 +58,22 @@ export default function TextInput(props: FieldType) {
                 <Form
                     layout='horizontal'
                     form={form}
-                    initialValues={{ label, placeholder, maxLength }}
-                    onValuesChange={onValuesChange}
+                    initialValues={{ label, options }}
+                    onChange={handleChange}
                 >
                     <Form.Item label='表单问题' name='label'>
                         <Input placeholder='请输入标题' />
                     </Form.Item>
-                    <Form.Item label='占位文本' name='placeholder'>
+                    <Form.Item
+                        label='占位文本'
+                        name={['options', 'placeholder']}
+                    >
                         <Input placeholder='请输入占位文本' />
                     </Form.Item>
-                    <Form.Item label='最大长度' name='maxLength'>
+                    <Form.Item label='最大长度' name={['options', 'maxLength']}>
                         <InputNumber
                             min={1}
-                            max={1000}
+                            max={30}
                             placeholder='请输入文本最大长度，默认最大长度为30'
                             style={{ width: '100%' }}
                         />
