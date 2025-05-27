@@ -8,4 +8,5 @@ export default interface FieldType {
     isEditing: boolean;
     options: Record<string, any>;
     value: any;
+    onChange: (value: any) => void;
 }

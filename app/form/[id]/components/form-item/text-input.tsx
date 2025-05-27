@@ -1,51 +1,15 @@
 'use client';
 
 import { Input, InputNumber, Form } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { FormUpdateType, updateForm } from '@/store/form';
-import { AppDispatch } from '@/store/index';
+import React from 'react';
 import FieldType from './field-types';
+import WithUpdateState from './withUpdateState';
 
-export default function TextInput(props: FieldType) {
-    const { isEditing, id, options, label } = props;
+function TextInput(props: FieldType) {
+    const { isEditing, options, label, onChange } = props;
     const { placeholder } = options;
 
-    const dispatch = useDispatch<AppDispatch>();
-
     const [form] = Form.useForm();
-
-    const [changed, setChanged] = useState<boolean>(false);
-
-    const [formData, setFormData] = useState(null);
-
-    useEffect(() => {
-        if (!isEditing && changed) {
-            handleUpdate();
-            setChanged(false);
-        }
-    }, [isEditing, changed]);
-
-    const handleUpdate = () => {
-        dispatch(
-            updateForm({
-                type: FormUpdateType.UpdateItem,
-                data: {
-                    id,
-                    old: {
-                        label,
-                        options,
-                    },
-                    updated: formData,
-                },
-            })
-        );
-    };
-
-    const handleChange = () => {
-        setFormData(form.getFieldsValue());
-        setChanged(true);
-    };
 
     return (
         <div style={{ flex: 1 }}>
@@ -59,7 +23,7 @@ export default function TextInput(props: FieldType) {
                     layout='horizontal'
                     form={form}
                     initialValues={{ label, options }}
-                    onChange={handleChange}
+                    onChange={() => onChange(form.getFieldsValue())}
                 >
                     <Form.Item label='表单问题' name='label'>
                         <Input placeholder='请输入标题' />
@@ -83,3 +47,5 @@ export default function TextInput(props: FieldType) {
         </div>
     );
 }
+
+export default WithUpdateState(TextInput);

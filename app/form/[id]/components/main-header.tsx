@@ -116,6 +116,18 @@ export default function MainHeader() {
                     })
                 );
                 break;
+            case FormUpdateType.SortList:
+                dispatch(
+                    updateForm({
+                        type: FormUpdateType.SortList,
+                        data: {
+                            oldIndex: state.data.newIndex,
+                            newIndex: state.data.oldIndex,
+                        },
+                        history: true,
+                    })
+                );
+                break;
         }
     };
 
@@ -169,6 +181,18 @@ export default function MainHeader() {
                             id: state.data.id,
                             old: state.data.old,
                             updated: state.data.updated,
+                        },
+                        history: true,
+                    })
+                );
+                break;
+            case FormUpdateType.SortList:
+                dispatch(
+                    updateForm({
+                        type: FormUpdateType.SortList,
+                        data: {
+                            oldIndex: state.data.oldIndex,
+                            newIndex: state.data.newIndex,
                         },
                         history: true,
                     })

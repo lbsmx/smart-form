@@ -16,6 +16,7 @@ import CheckboxGroup from '../form-item/checkbox-group';
 import { CloseOutlined } from '@ant-design/icons';
 import { UploaderProps } from '../form-item/upload';
 import Uploader from '../form-item/upload';
+import FormRate from '../form-item/form-rate';
 
 // 定义表单组件的类型映射
 export interface FormComponentMap {
@@ -24,6 +25,7 @@ export interface FormComponentMap {
     radioGroup: React.FC<ItemProps>;
     checkboxGroup: React.FC<ItemProps>;
     uploader: React.FC<UploaderProps>;
+    rate: React.FC<ItemProps>;
 }
 
 // 实现表单组件的映射
@@ -33,6 +35,7 @@ export const formComponentMap: FormComponentMap = {
     radioGroup: RadioGroup,
     checkboxGroup: CheckboxGroup,
     uploader: Uploader,
+    rate: FormRate,
 };
 
 const Item = forwardRef<HTMLElement, ItemProps>(

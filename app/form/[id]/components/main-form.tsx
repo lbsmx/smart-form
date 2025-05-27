@@ -18,8 +18,6 @@ export default function MainForm({
     const dispatch = useDispatch<AppDispatch>();
     const editable = useSelector((state: RootState) => state.form.editable);
 
-    console.log(formList)
-
     return (
         <div className={styles.formContainer}>
             <div className={styles.formTypeContainer}>

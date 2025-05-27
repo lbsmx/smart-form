@@ -38,13 +38,19 @@ const SideItem = forwardRef<HTMLDivElement, SideItemProps>(
         const getIcon = (type: string) => {
             switch (type) {
                 case 'textInput':
-                    return <span className={styles.icon}>🔍</span>; // 示例图标
-                case 'numberInput':
-                    return <span className={styles.icon}>🔢</span>; // 示例图标
-                case 'textarea':
-                    return <span className={styles.icon}>📝</span>; // 示例图标
+                    return <span className={styles.icon}>🔤</span>; // 文本输入
+                case 'textArea':
+                    return <span className={styles.icon}>📝</span>; // 多行文本
+                case 'rate':
+                    return <span className={styles.icon}>⭐</span>; // 评分组件
+                case 'radioGroup':
+                    return <span className={styles.icon}>🔘</span>; // 单选框
+                case 'checkboxGroup':
+                    return <span className={styles.icon}>✅</span>; // 复选框
+                case 'switch':
+                    return <span className={styles.icon}>🔄</span>; // 开关
                 default:
-                    return <span className={styles.icon}>🔗</span>; // 默认图标
+                    return <span className={styles.icon}>📎</span>; // 默认图标
             }
         };
 
