@@ -5,7 +5,7 @@ import { AppDispatch } from '@/store';
 import { FormUpdateType, updateForm } from '@/store/form';
 
 export default function WithUpdateState(Component: React.FC<FieldType>) {
-    const updateStateComponent = (props: FieldType) => {
+    const UpdateStateComponent = (props: FieldType) => {
         const { isEditing, label, options, id } = props;
         const [changed, setChanged] = useState<boolean>(false);
         const [formData, setFormData] = useState<any>({});
@@ -41,5 +41,5 @@ export default function WithUpdateState(Component: React.FC<FieldType>) {
         return <Component {...props} onChange={onChange} />;
     };
 
-    return updateStateComponent;
+    return UpdateStateComponent;
 }
