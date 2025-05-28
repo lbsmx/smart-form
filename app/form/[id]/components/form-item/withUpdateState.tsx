@@ -15,6 +15,7 @@ export default function WithUpdateState(Component: React.FC<FieldType>) {
             if (!isEditing && changed) {
                 // 执行保存逻辑
                 handleUpdate();
+                setChanged(false);
             }
         }, [isEditing, changed]);
 

@@ -17,6 +17,8 @@ https://smart-form-kappa.vercel.app/
 
 6. 支持 undo/redo
 
+7. 支持实时保存
+
 ## 技术栈
 
 1. Next.js
