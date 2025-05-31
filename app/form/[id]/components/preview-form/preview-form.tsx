@@ -1,7 +1,17 @@
 'use client';
 
 import React from 'react';
-import { Form, Input, Checkbox, Radio, Button, Upload, message } from 'antd';
+import {
+    Form,
+    Input,
+    Checkbox,
+    Radio,
+    Button,
+    Upload,
+    message,
+    Rate,
+    DatePicker,
+} from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import FieldType from '../form-item/field-types';
 
@@ -14,13 +24,13 @@ function previewUploader(props) {
     const { accept, multiple } = props;
     return (
         <Upload.Dragger accept={accept} multiple={multiple}>
-            <p className="ant-upload-drag-icon">
+            <p className='ant-upload-drag-icon'>
                 <InboxOutlined />
             </p>
-            <p className="ant-upload-text">
+            <p className='ant-upload-text'>
                 <span style={{ color: '#1876ff' }}>点击/拖拽</span> 上传
             </p>
-            <p className="ant-upload-hint">支持 {accept} 格式的文件</p>
+            <p className='ant-upload-hint'>支持 {accept} 格式的文件</p>
         </Upload.Dragger>
     );
 }
@@ -43,6 +53,8 @@ export default function PreviewForm(props: PreviewFormProps) {
         radioGroup: Radio.Group,
         checkboxGroup: Checkbox.Group,
         uploader: previewUploader,
+        rate: Rate,
+        datePicker: DatePicker,
     };
 
     const onFinish = async (values: any) => {
@@ -97,7 +109,7 @@ export default function PreviewForm(props: PreviewFormProps) {
         <>
             {contextHolder}
             <Form
-                layout="vertical"
+                layout='vertical'
                 style={{ padding: '24px', margin: '0 auto' }}
                 form={form}
                 onFinish={onFinish}
@@ -125,7 +137,7 @@ export default function PreviewForm(props: PreviewFormProps) {
                 })}
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type='primary' htmlType='submit'>
                         提交
                     </Button>
                 </Form.Item>

@@ -24,7 +24,7 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import Item from './components/Item/Item.tsx';
 import { SortableItemProps } from './components/sortable-item/sortable-item';
 import { v4 as uuidv4 } from 'uuid';
@@ -44,7 +44,7 @@ const screenReaderInstructions: ScreenReaderInstructions = {
 };
 
 export default function Form({ params }: { params: Promise<{ id: string }> }) {
-    const { id }: { id: string } = React.use(params);
+    const { id }: { id: string } = use(params);
 
     const [activeItem, setActiveItem] = useState<SortableItemProps | null>(
         null

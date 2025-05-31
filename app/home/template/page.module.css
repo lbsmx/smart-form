@@ -34,17 +34,6 @@
     line-height: 1.5;
 }
 
-.container {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-    padding: 24px;
-    overflow-y: auto;
-    max-height: calc(100vh - 200px);
-    align-content: start;
-}
-
 /* 响应式布局 */
 @media (max-width: 1200px) {
     .main {

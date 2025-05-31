@@ -18,6 +18,7 @@ import { UploaderProps } from '../form-item/upload';
 import Uploader from '../form-item/upload';
 import FormRate from '../form-item/form-rate';
 import FormDatePicker from '../form-item/form-date-picker';
+import FormTimePicker from '../form-item/form-time-picker';
 
 // 定义表单组件的类型映射
 export interface FormComponentMap {
@@ -28,7 +29,7 @@ export interface FormComponentMap {
     uploader: React.FC<UploaderProps>;
     rate: React.FC<ItemProps>;
     datePicker: React.FC<ItemProps>;
-    // timePicker: React.FC<ItemProps>,
+    timePicker: React.FC<ItemProps>;
 }
 
 // 实现表单组件的映射
@@ -40,6 +41,7 @@ export const formComponentMap: FormComponentMap = {
     uploader: Uploader,
     rate: FormRate,
     datePicker: FormDatePicker,
+    timePicker: FormTimePicker,
 };
 
 const Item = forwardRef<HTMLElement, ItemProps>(
