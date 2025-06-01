@@ -7,17 +7,17 @@ import { RootState } from '@/store';
 
 interface SideFormItemPanelProps {
     active: SortableItemProps | null;
-    formItemLib: Record<string, SortableItemProps[]> | null;
+    formLib: Record<string, SortableItemProps[]> | null;
 }
 
-function SideFormItemPanel({ active, formItemLib }: SideFormItemPanelProps) {
+function SideFormItemPanel({ active, formLib }: SideFormItemPanelProps) {
     const editable = useSelector((state: RootState) => state.form.editable);
 
     return (
         <div className={`${styles.panel} ${editable ? styles.editable : ''}`}>
             <div style={{ padding: '24px', width: '350px' }}>
-                {formItemLib
-                    ? Object.entries(formItemLib).map(
+                {formLib
+                    ? Object.entries(formLib).map(
                           ([label, sets], groupIndex) => (
                               <div
                                   key={groupIndex}

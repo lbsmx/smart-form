@@ -18,16 +18,18 @@ export default function MainForm({
     const dispatch = useDispatch<AppDispatch>();
     const editable = useSelector((state: RootState) => state.form.editable);
 
+    const { Group, Button } = Radio;
+
     return (
         <div className={styles.formContainer}>
             <div className={styles.formTypeContainer}>
-                <Radio.Group
+                <Group
                     value={editable}
                     onChange={(e) => dispatch(setEditable(e.target.value))}
                 >
-                    <Radio.Button value={true}>编辑</Radio.Button>
-                    <Radio.Button value={false}>预览</Radio.Button>
-                </Radio.Group>
+                    <Button value={true}>编辑</Button>
+                    <Button value={false}>预览</Button>
+                </Group>
             </div>
             <div className={styles.form}>
                 <FormTitle editable={editable} />

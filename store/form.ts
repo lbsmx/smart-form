@@ -105,9 +105,6 @@ const formSlice = createSlice({
             state.formTitle = formTitle;
             state.formList = formList;
         },
-        setFormList(state, action: PayloadAction<SortableItemProps[]>) {
-            state.formList = action.payload;
-        },
         setEditable(state, action: PayloadAction<boolean>) {
             state.editable = action.payload;
         },
@@ -171,6 +168,6 @@ const formSlice = createSlice({
     },
 });
 
-export const { setForm, setFormList, setEditable } = formSlice.actions;
+export const { setForm, setEditable } = formSlice.actions;
 
 export default formSlice.reducer;
