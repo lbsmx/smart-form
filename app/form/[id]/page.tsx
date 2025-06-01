@@ -74,6 +74,7 @@ export default async function Form({
             </>
         );
     } catch (error) {
+        console.log(error);
         notFound();
     }
 }
