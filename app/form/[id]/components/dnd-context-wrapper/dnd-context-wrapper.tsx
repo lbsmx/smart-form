@@ -34,6 +34,7 @@ import { AppDispatch, RootState } from '@/store/index.ts';
 import SideItem from '../../components/side-item/side-item.tsx';
 import _ from 'lodash';
 import { setFormLib } from '@/store/field.ts';
+import { produce } from 'immer';
 
 const screenReaderInstructions: ScreenReaderInstructions = {
     draggable: `
@@ -104,7 +105,7 @@ export default function DndContextWrapper(props: DndContextWrapper) {
         if (id === 'form-container') {
             return 'formContainer';
         }
-        return 'formItemLib';
+        return 'formLib';
     };
 
     const announcements: Announcements = {
@@ -122,7 +123,7 @@ export default function DndContextWrapper(props: DndContextWrapper) {
             if (activeContainer === overContainer) return;
             const overItem = over.data.current;
             // 从lib中拖拽到form中
-            if (activeContainer === 'formItemLib' && !activeItem?.sortable) {
+            if (activeContainer === 'formLib' && !activeItem?.sortable) {
                 const overIndex = formList.findIndex(
                     (item) => item.id === overItem?.id
                 );
@@ -134,31 +135,26 @@ export default function DndContextWrapper(props: DndContextWrapper) {
                 const modifier = isBelowOverItem ? 1 : 0;
                 const newIndex: number =
                     overIndex >= 0 ? overIndex + modifier : formList.length + 1;
-                setFormItemLib((item) => {
-                    if (!item) return;
 
-                    const copyItem = _.cloneDeep(item);
-                    const activeGroupKey = Object.keys(copyItem).find((key) =>
-                        copyItem[key as keyof typeof copyItem]?.some(
-                            (item) => item.id === activeItem.id
-                        )
+                // 修改formLib
+                const newFormLib = produce(formLib, (draft) => {
+                    const activeGroupKey = Object.keys(draft).find((key) =>
+                        draft[key]?.some((item) => item.id === activeItem.id)
                     );
 
                     if (!activeGroupKey) return;
 
-                    const activeGroup =
-                        copyItem[activeGroupKey as keyof typeof copyItem];
+                    const activeGroup = draft[activeGroupKey];
                     const activeIndex = activeGroup?.findIndex(
-                        (item: SortableItemProps) => item.id === activeItem.id
+                        (item) => item.id === activeItem.id
                     );
 
                     if (activeIndex === -1 || !activeGroup) return;
 
-                    // 修改 id
                     activeGroup[activeIndex].id = uuidv4();
-
-                    return copyItem;
                 });
+
+                dispatch(setFormLib(newFormLib));
                 dispatch(
                     updateForm({
                         type: FormUpdateType.AddItem,
@@ -206,7 +202,7 @@ export default function DndContextWrapper(props: DndContextWrapper) {
 
     return (
         <DndContext
-            id='dnd-context'
+            id="dnd-context"
             accessibility={{
                 announcements,
                 screenReaderInstructions,

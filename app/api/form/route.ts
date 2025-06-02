@@ -127,26 +127,3 @@ export async function PUT(request: NextRequest) {
 
     return createResponse(type, form);
 }
-
-export async function GET(request: NextRequest) {
-    await dbConnect();
-    const searchParams = request.nextUrl.searchParams;
-    const id = searchParams.get('id');
-    const form = await Forms.findById(id);
-    if (!form) {
-        return new Response(
-            JSON.stringify({
-                error: 'Form not found',
-            }),
-            { status: 404 }
-        );
-    }
-
-    const { title, formList } = form;
-    const response = {
-        formId: id,
-        formTitle: title,
-        formList,
-    };
-    return new Response(JSON.stringify(response), { status: 200 });
-}
