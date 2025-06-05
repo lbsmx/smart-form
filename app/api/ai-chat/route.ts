@@ -10,8 +10,8 @@ export async function POST(request: NextRequest) {
     const { requirements } = await request.json();
 
     const openai = new OpenAI({
-        baseURL: process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL,
-        apiKey: process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY,
+        baseURL: process.env.DEEPSEEK_BASE_URL,
+        apiKey: process.env.DEEPSEEK_API_KEY,
     });
 
     const systemPrompt = `你是一个专业的表单设计助手。请根据用户要求生成一个结构化的 JSON 格式表单模板

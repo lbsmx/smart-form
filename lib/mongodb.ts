@@ -1,7 +1,7 @@
 // lib/mongodb.ts
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URL as string;
+const MONGODB_URI = process.env.MONGODB_URL as string;
 
 if (!MONGODB_URI) {
     throw new Error(

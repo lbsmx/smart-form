@@ -6,9 +6,9 @@ export default function HomeLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', height: '100%' }}>
             <Sidebar />
-            <div style={{ flex: 1, height: '100vh', overflow: 'hidden' }}>
+            <div style={{ flex: 1, height: '100%', overflow: 'hidden' }}>
                 {children}
             </div>
         </div>
