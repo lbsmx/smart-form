@@ -19,6 +19,8 @@ https://smart-form-kappa.vercel.app/
 
 7. 支持实时保存
 
+8. 已接入github登录
+
 ## 技术栈
 
 1. Next.js

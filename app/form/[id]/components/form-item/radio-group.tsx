@@ -102,7 +102,21 @@ const RenderOptions = ({ label, options, id }) => {
                     activeIndex,
                     overIndex
                 );
-                console.log(updatedOptions);
+                dispatch(
+                    updateForm({
+                        type: FormUpdateType.UpdateItem,
+                        data: {
+                            id,
+                            old: { label, options: { options } },
+                            updated: {
+                                label,
+                                options: {
+                                    options: updatedOptions,
+                                },
+                            },
+                        },
+                    })
+                );
             }
             return undefined;
         },
