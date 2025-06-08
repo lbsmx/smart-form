@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Space, Popover } from 'antd';
+import { Button, Space, Popover, Tooltip } from 'antd';
 import {
     UndoOutlined,
     RedoOutlined,
@@ -213,10 +213,12 @@ export default function MainHeader() {
             }}
         >
             <Space>
-                <Button icon={<UndoOutlined />} onClick={handleUndo} />
-                <Button icon={<RedoOutlined />} onClick={handleRedo} />
-                <Button icon={<SaveOutlined />} type='primary' />
-                <Button icon={<EyeOutlined />} />
+                <Tooltip title='撤销'>
+                    <Button icon={<UndoOutlined />} onClick={handleUndo} />
+                </Tooltip>
+                <Tooltip title='重做'>
+                    <Button icon={<RedoOutlined />} onClick={handleRedo} />
+                </Tooltip>
             </Space>
 
             <Popover content={content} title='分享表单' trigger='click'>

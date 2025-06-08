@@ -1,0 +1,13 @@
+.userContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.userName {
+    font-weight: bold;
+}
+
+.authButton {
+    margin-left: 10px;
+}

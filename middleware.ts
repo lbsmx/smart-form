@@ -1,22 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { v4 as uuid } from 'uuid';
+import { auth } from './auth';
 
 // 全局登录校验
-export function middleware(request: NextRequest) {
-    const userid = request.cookies.get('userid')?.value;
 
-    if (!userid) {
-        const newUserId = uuid();
+const protectedRoutes = ['/home/my-forms', '/form/'];
+export async function middleware(request: NextRequest) {
+    const session = await auth();
+    const isProtectedRoute = protectedRoutes.some((route) =>
+        request.nextUrl.pathname.startsWith(route)
+    );
 
-        const response = NextResponse.next();
-        response.cookies.set('userid', newUserId, {
-            maxAge: 60 * 60 * 24 * 365, // 1 year
-            httpOnly: true,
-            path: '/',
-            sameSite: 'strict',
-        });
-
-        return response;
+    if (isProtectedRoute && !session) {
+        return NextResponse.redirect(new URL('/api/auth/signin', request.url));
     }
 
     return NextResponse.next();

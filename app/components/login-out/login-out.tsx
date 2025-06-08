@@ -1,16 +1,18 @@
-'use client';
-
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import { login, logout } from '@/app/action/auth';
+import styles from './login-out.module.css';
 
 export default function LogInOut(props) {
     const { session } = props;
+
     return session?.user ? (
-        <div>
-            <span>{session?.user.name}</span>
-            <Button color='default' variant='solid' onClick={logout}>
-                登出
-            </Button>
+        <div className={styles.userContainer}>
+            <Space size='large'>
+                <span className={styles.userName}>{session?.user.name}</span>
+                <Button color='default' variant='solid' onClick={logout}>
+                    登出
+                </Button>
+            </Space>
         </div>
     ) : (
         <Button color='default' variant='solid' onClick={login}>

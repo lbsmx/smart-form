@@ -2,14 +2,20 @@ import dbConnect from '@/lib/mongodb';
 import Forms from '@/lib/form';
 import { NextRequest } from 'next/server';
 import { FormUpdateType } from '@/store/form';
+import { auth } from '@/auth';
 
 export async function POST(request: NextRequest) {
     try {
-        await dbConnect();
-        const cookie = request.cookies.get('userid');
-        const userId = cookie?.value;
-        const { title, fields: formList } = await request.json();
-        const newForm = await Forms.create({ userId, title, formList });
+        const [_, session, requestObj] = await Promise.all([
+            dbConnect(),
+            auth(),
+            request.json(),
+        ]);
+        const {
+            user: { email },
+        } = session;
+        const { title, fields: formList } = requestObj;
+        const newForm = await Forms.create({ userId: email, title, formList });
 
         const response = {
             id: newForm._id,

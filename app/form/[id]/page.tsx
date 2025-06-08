@@ -4,7 +4,7 @@ import Fields from '@/lib/field';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { v4 as uuid } from 'uuid';
 import DndContextWrapper from './components/dnd-context-wrapper/dnd-context-wrapper';
-// import { Button } from 'antd';
+import { auth } from '@/auth';
 
 interface SideField {
     id: UniqueIdentifier;
@@ -54,8 +54,12 @@ export default async function Form({
     params: Promise<{ id: string }>;
 }) {
     const { id }: { id: string } = await params;
+    const session = await auth();
     try {
-        const formPromsie = Forms.findById(id).exec();
+        const formPromsie = Forms.findOne({
+            _id: id,
+            userId: session?.user?.email,
+        }).exec();
         const fieldsPromise = Fields.find({}, { _id: 0 }).exec(); // 排除_id字段
         // 两个数据直接没有依赖 并发请求 降低瀑布流
         const [form, fields] = await Promise.all([formPromsie, fieldsPromise]);
@@ -70,7 +74,6 @@ export default async function Form({
 
         return (
             <>
-                {/* <Button>nh</Button> */}
                 <DndContextWrapper formData={formData} />
             </>
         );

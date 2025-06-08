@@ -22,7 +22,7 @@ interface FormValues {
     requirements: string;
 }
 
-export default function GenerateTemplate() {
+export default function GenerateTemplate({ disabled }: { disabled: boolean }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
     const [form] = Form.useForm<FormValues>();
@@ -31,6 +31,10 @@ export default function GenerateTemplate() {
     const router = useRouter();
 
     const showModal = () => {
+        if (disabled) {
+            messageApi.info('请先登录');
+            return;
+        }
         setIsModalOpen(true);
     };
 
@@ -105,7 +109,7 @@ export default function GenerateTemplate() {
                     找不到合适的模板？试试我们的 AI 助手
                 </Text>
                 <Button
-                    type="primary"
+                    type='primary'
                     onClick={showModal}
                     className={styles.generateButton}
                     icon={<RocketOutlined />}
@@ -137,9 +141,9 @@ export default function GenerateTemplate() {
                         </Text>
                     </div>
 
-                    <Form form={form} layout="vertical" className={styles.form}>
+                    <Form form={form} layout='vertical' className={styles.form}>
                         <Form.Item
-                            name="requirements"
+                            name='requirements'
                             rules={[
                                 {
                                     required: true,
@@ -150,7 +154,7 @@ export default function GenerateTemplate() {
                         >
                             <TextArea
                                 className={styles.textArea}
-                                placeholder="可以是模糊需求，比如帮我生成周报模板，也可以是具体需求，比如帮我生成模板要求姓名，年龄，性别等字段"
+                                placeholder='可以是模糊需求，比如帮我生成周报模板，也可以是具体需求，比如帮我生成模板要求姓名，年龄，性别等字段'
                                 autoSize={{ minRows: 6, maxRows: 12 }}
                                 minLength={5}
                                 maxLength={200}
@@ -168,7 +172,7 @@ export default function GenerateTemplate() {
                             取消
                         </Button>
                         <Button
-                            type="primary"
+                            type='primary'
                             onClick={handleSubmit}
                             className={styles.submitButton}
                             icon={<SendOutlined />}
